@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4569cd198189b1541a3f08d303fce6fc, type: 3}
+  m_Name: ProcessList
+  m_EditorClassIdentifier: 
+  processes:
+  - name: Process 1
+    minBurstTime: 5
+    maxBurstTime: 10
+    minTimeUntilIOWait: 2
+    maxTimeUntilIOWait: 4
+    minIOWaitDuration: 2
+    maxIOWaitDuration: 4
+  - name: Process 2
+    minBurstTime: 5
+    maxBurstTime: 10
+    minTimeUntilIOWait: 4
+    maxTimeUntilIOWait: 5
+    minIOWaitDuration: 3
+    maxIOWaitDuration: 5
+  - name: Process 3
+    minBurstTime: 10
+    maxBurstTime: 20
+    minTimeUntilIOWait: 5
+    maxTimeUntilIOWait: 7
+    minIOWaitDuration: 2
+    maxIOWaitDuration: 3
