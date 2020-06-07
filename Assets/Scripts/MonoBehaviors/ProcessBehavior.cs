@@ -18,7 +18,7 @@ namespace ProcessScheduling
         public State CurrentState
         {
             get;
-            private set;
+            set;
         }
 
         public Text processNameText;
@@ -65,6 +65,21 @@ namespace ProcessScheduling
 
         private TimeManager timeManager = null;
 
+        private CanvasGroup canvasGroup;
+
+        public bool IsVisible
+        {
+            get
+            {
+                return canvasGroup.alpha == 1.0f;
+            }
+            
+            set
+            {
+                canvasGroup.alpha = value ? 1.0f : 0.0f;
+            }
+        }
+
         public void Execute(float time)
         {
             if (CurrentState == State.Ready)
@@ -97,6 +112,8 @@ namespace ProcessScheduling
         private void Awake()
         {
             timeManager = GameObject.FindObjectOfType<TimeManager>();
+
+            canvasGroup = GetComponent<CanvasGroup>();
 
             CurrentState = State.Ready;
         }

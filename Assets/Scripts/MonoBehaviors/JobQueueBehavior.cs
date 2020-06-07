@@ -28,5 +28,10 @@ namespace ProcessScheduling
                 processGO.transform.SetParent(this.transform, false);
             }
         }
+
+        public void AddProcess(ProcessBehavior process)
+        {
+            process.transform.SetParent(this.transform, false);
+        }
     }
 }

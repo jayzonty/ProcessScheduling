@@ -8,8 +8,51 @@ namespace ProcessScheduling
 
         public JobQueueBehavior jobQueue;
 
+        public CPUListBehavior cpuList;
+
+        public int maxNumCPUs = 8;
+
+        public int numFinishedProcesses = 0;
+
         private float timer = 0.0f;
 
+        public void AddProcessToJobQueue(ProcessBehavior process)
+        {
+            if (jobQueue != null)
+            {
+                jobQueue.AddProcess(process);
+            }
+        }
+
+        public int NumCPUs
+        {
+            get
+            {
+                if (cpuList != null)
+                {
+                    return cpuList.GetNumCPUs();
+                }
+
+                return 0;
+            }
+        }
+
+        public bool CanAddCPU
+        {
+            get
+            {
+                return NumCPUs < maxNumCPUs;
+            }
+        }
+
+        public void AddCPU()
+        {
+            if (NumCPUs < maxNumCPUs)
+            {
+                AddCPU();
+            }
+        }
+        
         private void Update()
         {
             timer -= Time.deltaTime;
