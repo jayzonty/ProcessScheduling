@@ -14,23 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   processes:
   - name: Process 1
-    minBurstTime: 5
-    maxBurstTime: 10
-    minTimeUntilIOWait: 2
-    maxTimeUntilIOWait: 4
-    minIOWaitDuration: 2
-    maxIOWaitDuration: 4
-  - name: Process 2
-    minBurstTime: 5
-    maxBurstTime: 10
-    minTimeUntilIOWait: 4
-    maxTimeUntilIOWait: 5
-    minIOWaitDuration: 3
-    maxIOWaitDuration: 5
-  - name: Process 3
     minBurstTime: 10
     maxBurstTime: 20
     minTimeUntilIOWait: 5
-    maxTimeUntilIOWait: 7
-    minIOWaitDuration: 2
-    maxIOWaitDuration: 3
+    maxTimeUntilIOWait: 10
+    minIOWaitDuration: 3
+    maxIOWaitDuration: 5
+  - name: Process 2
+    minBurstTime: 5
+    maxBurstTime: 10
+    minTimeUntilIOWait: 3
+    maxTimeUntilIOWait: 5
+    minIOWaitDuration: 5
+    maxIOWaitDuration: 10
+  - name: Process 3
+    minBurstTime: 20
+    maxBurstTime: 30
+    minTimeUntilIOWait: 10
+    maxTimeUntilIOWait: 15
+    minIOWaitDuration: 5
+    maxIOWaitDuration: 10

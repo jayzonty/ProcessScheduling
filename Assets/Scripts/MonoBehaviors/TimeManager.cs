@@ -4,19 +4,87 @@ namespace ProcessScheduling
 {
     public class TimeManager : MonoBehaviour
     {
-        [SerializeField]
-        private float timeMultiplier = 1.0f;
+        public delegate void TimerTickDelegate(int tick);
+        public event TimerTickDelegate TimerTick;
 
-        public float TimeMultiplier
+        // How much time in real life is equivalent to 1 game tick
+        public float secondsPerTick = 1.0f;
+
+        public float timeMultiplier = 1.0f;
+
+        public float maxMultiplier = 4.0f;
+
+        public int CurrentGameTime
         {
-            get
-            {
-                return timeMultiplier;
-            }
+            get;
+            private set;
+        }
 
-            set
+        private bool m_isPaused = false;
+
+        private float m_tickCountdown = 0.0f;
+
+        public void StartTimer()
+        {
+            m_tickCountdown = secondsPerTick;
+
+            m_isPaused = false;
+
+            TimerTick?.Invoke(CurrentGameTime);
+        }
+
+        public void ResetTimer()
+        {
+            CurrentGameTime = 0;
+            m_tickCountdown = secondsPerTick;
+
+            TimerTick?.Invoke(CurrentGameTime);
+        }
+
+        public void PauseTimer()
+        {
+            m_isPaused = true;
+        }
+
+        public void ResumeTimer()
+        {
+            m_isPaused = false;
+        }
+
+        private void Awake()
+        {
+            /*GameState gameState = GameObject.FindObjectOfType<GameState>();
+            if (gameState != null)
             {
-                timeMultiplier = value;
+                gameState.GameOverHandlers += HandleGameOver;
+            }*/
+        }
+
+        private void HandleGameOver()
+        {
+            timeMultiplier = 0.0f;
+        }
+
+        private void Start()
+        {
+            StartTimer();
+        }
+
+        private void Update()
+        {
+            if (!m_isPaused)
+            {
+                if (m_tickCountdown > 0.0f)
+                {
+                    m_tickCountdown -= Time.deltaTime * timeMultiplier;
+                }
+                else
+                {
+                    CurrentGameTime++;
+                    TimerTick?.Invoke(CurrentGameTime);
+
+                    m_tickCountdown = secondsPerTick;
+                }
             }
         }
     }

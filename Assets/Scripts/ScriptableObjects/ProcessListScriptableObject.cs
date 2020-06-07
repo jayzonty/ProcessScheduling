@@ -9,14 +9,14 @@ namespace ProcessScheduling
     {
         public string name;
 
-        public float minBurstTime;
-        public float maxBurstTime;
+        public int minBurstTime;
+        public int maxBurstTime;
 
-        public float minTimeUntilIOWait;
-        public float maxTimeUntilIOWait;
+        public int minTimeUntilIOWait;
+        public int maxTimeUntilIOWait;
 
-        public float minIOWaitDuration;
-        public float maxIOWaitDuration;
+        public int minIOWaitDuration;
+        public int maxIOWaitDuration;
     }
 
     [CreateAssetMenu(fileName = "ProcessList", menuName = "Game/ProcessList")]

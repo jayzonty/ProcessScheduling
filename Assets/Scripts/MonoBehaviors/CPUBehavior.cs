@@ -10,7 +10,7 @@ namespace ProcessScheduling
 
         public Text statusText;
 
-        public float contextSwitchTime = 2.0f;
+        public int contextSwitchTime = 5;
 
         public ProcessBehavior CurrentProcess
         {
@@ -34,7 +34,7 @@ namespace ProcessScheduling
 
         private GameManager gameManager;
 
-        private float contextSwitchTimer = 0.0f;
+        private int contextSwitchTimer = 0;
 
         private ProcessBehavior nextProcess = null;
         
@@ -90,7 +90,23 @@ namespace ProcessScheduling
             gameManager = GameObject.FindObjectOfType<GameManager>();
         }
 
-        private void Update()
+        private void OnEnable()
+        {
+            if (timeManager != null)
+            {
+                timeManager.TimerTick += TimeManager_TimerTick;
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (timeManager != null)
+            {
+
+            }
+        }
+
+        private void TimeManager_TimerTick(int tick)
         {
             if (CurrentProcess != null)
             {
@@ -101,7 +117,7 @@ namespace ProcessScheduling
                         statusText.enabled = false;
                         if (CurrentProcess.CurrentState == ProcessBehavior.State.Ready || CurrentProcess.CurrentState == ProcessBehavior.State.Running || CurrentProcess.CurrentState == ProcessBehavior.State.IOWait)
                         {
-                            CurrentProcess.Execute(Time.deltaTime * timeManager.TimeMultiplier);
+                            CurrentProcess.Execute(1);
                         }
                         else if (CurrentProcess.CurrentState == ProcessBehavior.State.Finished)
                         {
@@ -118,10 +134,10 @@ namespace ProcessScheduling
                     else if (CurrentState == State.ContextSwitch)
                     {
                         statusText.enabled = true;
-                        
-                        contextSwitchTimer -= Time.deltaTime * timeManager.TimeMultiplier;
+
+                        contextSwitchTimer = Mathf.Max(0, contextSwitchTimer - 1);
                         statusText.text = "Context Switch\n(" + contextSwitchTimer.ToString("F2") + ")";
-                        if (contextSwitchTimer <= 0.0f)
+                        if (contextSwitchTimer == 0)
                         {
                             if (nextProcess != null)
                             {

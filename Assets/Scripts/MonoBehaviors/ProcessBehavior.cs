@@ -30,38 +30,52 @@ namespace ProcessScheduling
             set;
         }
 
-        public float RemainingBurstTime
+        public int RemainingBurstTime
         {
             get;
             set;
         }
 
-        public float MinTimeUntilIOWait
+        public int MinTimeUntilIOWait
         {
             get;
             set;
         }
 
-        public float MaxTimeUntilIOWait
+        public int MaxTimeUntilIOWait
         {
             get;
             set;
         }
 
-        public float MinIOWaitDuration
+        public int MinIOWaitDuration
         {
             get;
             set;
         }
 
-        public float MaxIOWaitDuration
+        public int MaxIOWaitDuration
         {
             get;
             set;
         }
 
-        private float timeUntilNextIOWait = 0.0f;
-        private float timeUntilIOReceive = 0.0f;
+        public int Deadline
+        {
+            get;
+            set;
+        }
+
+        public int TurnaroundTime
+        {
+            get;
+            private set;
+        }
+
+        private int timeUntilNextIOWait = 0;
+        private int timeUntilIOReceive = 0;
+
+        private int startTime;
 
         private TimeManager timeManager = null;
 
@@ -80,7 +94,7 @@ namespace ProcessScheduling
             }
         }
 
-        public void Execute(float time)
+        public void Execute(int deltaTime)
         {
             if (CurrentState == State.Ready)
             {
@@ -90,16 +104,16 @@ namespace ProcessScheduling
             }
             else if (CurrentState == State.Running)
             {
-                RemainingBurstTime = Mathf.Max(0.0f, RemainingBurstTime - time);
-                timeUntilNextIOWait = Mathf.Max(0.0f, timeUntilNextIOWait - time);
+                RemainingBurstTime = Mathf.Max(0, RemainingBurstTime - deltaTime);
+                timeUntilNextIOWait = Mathf.Max(0, timeUntilNextIOWait - deltaTime);
 
-                if (RemainingBurstTime > 0.0f)
+                if (RemainingBurstTime > 0)
                 {
-                    if (timeUntilNextIOWait <= 0.0f)
+                    if (timeUntilNextIOWait == 0)
                     {
                         CurrentState = State.IOWait;
-                        timeUntilNextIOWait = Random.Range(MinTimeUntilIOWait, MaxTimeUntilIOWait);
-                        timeUntilIOReceive = Random.Range(MinIOWaitDuration, MaxIOWaitDuration);
+                        timeUntilNextIOWait = Random.Range(MinTimeUntilIOWait, MaxTimeUntilIOWait + 1);
+                        timeUntilIOReceive = Random.Range(MinIOWaitDuration, MaxIOWaitDuration + 1);
                     }
                 }
                 else
@@ -118,7 +132,31 @@ namespace ProcessScheduling
             CurrentState = State.Ready;
         }
 
-        private void Update()
+        private void Start()
+        {
+            if (timeManager != null)
+            {
+                startTime = timeManager.CurrentGameTime;
+            }
+        }
+
+        private void OnEnable()
+        {
+            if (timeManager != null)
+            {
+                timeManager.TimerTick += TimeManager_TimerTick;
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (timeManager != null)
+            {
+                timeManager.TimerTick -= TimeManager_TimerTick;
+            }
+        }
+
+        private void TimeManager_TimerTick(int tick)
         {
             if (processNameText != null)
             {
@@ -127,8 +165,13 @@ namespace ProcessScheduling
 
             if (processInfoText != null)
             {
-                string info = "Burst: " + RemainingBurstTime.ToString("F1") + "\n";
-                info += "State: " + CurrentState.ToString();
+                string info = "Burst: " + RemainingBurstTime.ToString() + "\n";
+                info += "State: " + CurrentState.ToString() + "\n";
+                info += "Time in system: " + TurnaroundTime.ToString();
+                if (Deadline > 0.0f)
+                {
+                    info += "\nDeadline: " + Deadline.ToString();
+                }
                 processInfoText.text = info;
             }
 
@@ -137,15 +180,17 @@ namespace ProcessScheduling
                 float timeMultipler = 1.0f;
                 if (timeManager != null)
                 {
-                    timeMultipler = timeManager.TimeMultiplier;
+                    timeMultipler = timeManager.timeMultiplier;
                 }
 
-                timeUntilIOReceive = Mathf.Max(0.0f, timeUntilIOReceive - Time.deltaTime * timeMultipler);
-                if (timeUntilIOReceive <= 0.0f)
+                timeUntilIOReceive = Mathf.Max(0, timeUntilIOReceive - 1);
+                if (timeUntilIOReceive == 0.0f)
                 {
                     CurrentState = State.Ready;
                 }
             }
+
+            TurnaroundTime = timeManager.CurrentGameTime - startTime;
         }
     }
 }

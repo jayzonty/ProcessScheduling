@@ -14,6 +14,8 @@ namespace ProcessScheduling
 
         public int numFinishedProcesses = 0;
 
+        public int score = 0;
+
         private float timer = 0.0f;
 
         public void AddProcessToJobQueue(ProcessBehavior process)
