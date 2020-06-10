@@ -102,7 +102,7 @@ namespace ProcessScheduling
         {
             if (timeManager != null)
             {
-
+                timeManager.TimerTick -= TimeManager_TimerTick;
             }
         }
 
