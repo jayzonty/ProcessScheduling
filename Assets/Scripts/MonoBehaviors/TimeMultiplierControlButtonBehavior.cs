@@ -50,7 +50,7 @@ namespace ProcessScheduling
         {
             m_timeManager.timeMultiplier = Mathf.Clamp(m_timeManager.timeMultiplier + timeMultiplierIncrement, 1.0f, m_timeManager.maxMultiplier);
 
-            PlayButtonBehavior playButton = GameObject.FindObjectOfType<PlayButtonBehavior>();
+            TimePlayPauseButtonBehavior playButton = GameObject.FindObjectOfType<TimePlayPauseButtonBehavior>();
             if (playButton != null)
             {
                 playButton.UpdateSprite();

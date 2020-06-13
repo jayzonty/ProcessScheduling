@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace ProcessScheduling
 {
-    public class PlayButtonBehavior : MonoBehaviour
+    public class TimePlayPauseButtonBehavior : MonoBehaviour
     {
         public Sprite playSprite;
         public Sprite pauseSprite;
