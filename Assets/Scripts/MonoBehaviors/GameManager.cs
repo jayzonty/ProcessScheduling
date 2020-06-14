@@ -10,8 +10,6 @@ namespace ProcessScheduling
 
         public CPUListBehavior cpuList;
 
-        public int maxNumCPUs = 8;
-
         public int numFinishedProcesses = 0;
 
         public int score = 0;
@@ -39,22 +37,6 @@ namespace ProcessScheduling
             }
         }
 
-        public bool CanAddCPU
-        {
-            get
-            {
-                return NumCPUs < maxNumCPUs;
-            }
-        }
-
-        public void AddCPU()
-        {
-            if (NumCPUs < maxNumCPUs)
-            {
-                AddCPU();
-            }
-        }
-        
         private void Update()
         {
             timer -= Time.deltaTime;

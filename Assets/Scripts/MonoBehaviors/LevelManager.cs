@@ -7,7 +7,6 @@ namespace ProcessScheduling
     public class LevelManager : MonoBehaviour
     {
         public int initialCPUs = 2;
-        public int maxCPUs = 8;
 
         public int maxMissableProcesses = 5;
     }
