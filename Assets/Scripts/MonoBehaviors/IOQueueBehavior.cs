@@ -45,6 +45,7 @@ namespace ProcessScheduling
                             if (cpuBehavior != null)
                             {
                                 cpuBehavior.CurrentProcess = null;
+                                cpuBehavior.ChangeState(CPUBehavior.State.Idle);
                             }
                         }
 

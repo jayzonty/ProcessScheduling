@@ -60,17 +60,15 @@ namespace ProcessScheduling
                     }
                     else if (CurrentState == State.Running)
                     {
-                        nextProcess = process;
+                        draggedObject.transform.SetParent(dropDestinationTransform);
+                        draggedObject.transform.localPosition = Vector3.zero;
 
-                        // Hide the process visual first because we have to display the context switch text
-                        nextProcess.IsVisible = false;
-
-                        CurrentProcess.CurrentState = ProcessBehavior.State.Ready;
+                        if (CurrentProcess.CurrentState == ProcessBehavior.State.Running)
+                        {
+                            CurrentProcess.CurrentState = ProcessBehavior.State.Ready;
+                        }
+                        
                         gameManager.AddProcessToJobQueue(CurrentProcess);
-                        CurrentProcess = null;
-
-                        contextSwitchTimer = contextSwitchTime;
-                        CurrentState = State.ContextSwitch;
                     }
                     
                     CurrentProcess = process;
@@ -82,6 +80,15 @@ namespace ProcessScheduling
                     draggable.ShouldReturnToOriginalParent = false;
                 }
             }
+        }
+
+        /// <summary>
+        /// Change CPU's state
+        /// </summary>
+        /// <param name="newState">New state</param>
+        public void ChangeState(State newState)
+        {
+            CurrentState = newState;
         }
 
         private void Awake()
@@ -133,26 +140,6 @@ namespace ProcessScheduling
                     }
                     else if (CurrentState == State.ContextSwitch)
                     {
-                        statusText.enabled = true;
-
-                        contextSwitchTimer = Mathf.Max(0, contextSwitchTimer - 1);
-                        statusText.text = "Context Switch\n(" + contextSwitchTimer.ToString("F2") + ")";
-                        if (contextSwitchTimer == 0)
-                        {
-                            if (nextProcess != null)
-                            {
-                                nextProcess.transform.SetParent(dropDestinationTransform, false);
-                                nextProcess.transform.localPosition = Vector3.zero;
-
-                                CurrentProcess = nextProcess;
-
-                                // Unhide the process visual after context switch is done
-                                nextProcess.IsVisible = true;
-                                nextProcess = null;
-
-                                CurrentState = State.Running;
-                            }
-                        }
                     }
                 }
             }
