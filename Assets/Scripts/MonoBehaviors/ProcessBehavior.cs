@@ -123,6 +123,24 @@ namespace ProcessScheduling
             }
         }
 
+        public void ExecuteIO(int deltaTime)
+        {
+            if (CurrentState == State.IOWait)
+            {
+                float timeMultipler = 1.0f;
+                if (timeManager != null)
+                {
+                    timeMultipler = timeManager.timeMultiplier;
+                }
+
+                timeUntilIOReceive = Mathf.Max(0, timeUntilIOReceive - 1);
+                if (timeUntilIOReceive == 0.0f)
+                {
+                    CurrentState = State.Ready;
+                }
+            }
+        }
+
         private void Awake()
         {
             timeManager = GameObject.FindObjectOfType<TimeManager>();
@@ -173,21 +191,6 @@ namespace ProcessScheduling
                     info += "\nDeadline: " + Deadline.ToString();
                 }
                 processInfoText.text = info;
-            }
-
-            if (CurrentState == State.IOWait)
-            {
-                float timeMultipler = 1.0f;
-                if (timeManager != null)
-                {
-                    timeMultipler = timeManager.timeMultiplier;
-                }
-
-                timeUntilIOReceive = Mathf.Max(0, timeUntilIOReceive - 1);
-                if (timeUntilIOReceive == 0.0f)
-                {
-                    CurrentState = State.Ready;
-                }
             }
 
             TurnaroundTime = timeManager.CurrentGameTime - startTime;
