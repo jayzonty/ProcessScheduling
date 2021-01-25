@@ -6,7 +6,7 @@ namespace ProcessScheduling
     {
         public ProcessListScriptableObject processList;
 
-        public JobQueueBehavior jobQueue;
+        public GameObject processPrefab;
 
         public CPUListBehavior cpuList;
 
@@ -16,13 +16,9 @@ namespace ProcessScheduling
 
         private float timer = 0.0f;
 
-        public void AddProcessToJobQueue(ProcessBehavior process)
-        {
-            if (jobQueue != null)
-            {
-                jobQueue.AddProcess(process);
-            }
-        }
+        private JobQueueBehavior jobQueueBehavior;
+
+        private JobRequestContainerBehavior jobRequestContainerBehavior;
 
         public int NumCPUs
         {
@@ -37,6 +33,28 @@ namespace ProcessScheduling
             }
         }
 
+        public void AddProcessToJobQueue(ProcessBehavior processBehavior)
+        {
+            if (jobQueueBehavior == null)
+            {
+                return;
+            }
+
+            if (processBehavior == null)
+            {
+                return;
+            }
+
+            jobQueueBehavior.AddProcess(processBehavior);
+        }
+
+        private void Awake()
+        {
+            jobQueueBehavior = GameObject.FindObjectOfType<JobQueueBehavior>();
+
+            jobRequestContainerBehavior = GameObject.FindObjectOfType<JobRequestContainerBehavior>();
+        }
+
         private void Update()
         {
             timer -= Time.deltaTime;
@@ -44,12 +62,41 @@ namespace ProcessScheduling
             {
                 timer = 5.0f;
 
-                Process processToSpawn = processList.processes[Random.Range(0, processList.processes.Count)];
-                if (jobQueue != null)
+                if (jobRequestContainerBehavior != null)
                 {
-                    jobQueue.AddProcess(processToSpawn);
+                    if (jobRequestContainerBehavior.CurrentProcess == null)
+                    {
+                        Process processToSpawn = processList.processes[Random.Range(0, processList.processes.Count)];
+                        ProcessBehavior processRequest = CreateProcessBehavior(processToSpawn);
+                        jobRequestContainerBehavior.SetProcess(processRequest);
+                    }
                 }
             }
+        }
+
+
+        private ProcessBehavior CreateProcessBehavior(Process process)
+        {
+            if (processPrefab == null)
+            {
+                return null;
+            }
+
+            GameObject processGO = GameObject.Instantiate(processPrefab);
+
+            ProcessBehavior processBehavior = processGO.GetComponent<ProcessBehavior>();
+            if (processBehavior != null)
+            {
+                processBehavior.Name = process.name;
+                processBehavior.CurrentState = ProcessBehavior.State.New;
+                processBehavior.RemainingBurstTime = Random.Range(process.minBurstTime, process.maxBurstTime);
+                processBehavior.MinTimeUntilIOWait = process.minTimeUntilIOWait;
+                processBehavior.MaxTimeUntilIOWait = process.maxTimeUntilIOWait;
+                processBehavior.MinIOWaitDuration = process.minIOWaitDuration;
+                processBehavior.MaxIOWaitDuration = process.maxIOWaitDuration;
+            }
+
+            return processBehavior;
         }
     }
 }

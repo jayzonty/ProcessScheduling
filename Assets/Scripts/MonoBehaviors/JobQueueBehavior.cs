@@ -1,37 +1,83 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace ProcessScheduling
 {
-    public class JobQueueBehavior : MonoBehaviour
+    public class JobQueueBehavior : MonoBehaviour, IDropHandler
     {
-        public GameObject processPrefab;
+        public Transform contentTransform;
 
-        public void AddProcess(Process process)
+        public void AddProcess(ProcessBehavior process)
         {
-            if (processPrefab == null)
+            if (contentTransform == null)
             {
                 return;
             }
 
-            GameObject processGO = GameObject.Instantiate(processPrefab);
-
-            ProcessBehavior processBehavior = processGO.GetComponent<ProcessBehavior>();
-            if (processBehavior != null)
-            {
-                processBehavior.Name = process.name;
-                processBehavior.RemainingBurstTime = Random.Range(process.minBurstTime, process.maxBurstTime);
-                processBehavior.MinTimeUntilIOWait = process.minTimeUntilIOWait;
-                processBehavior.MaxTimeUntilIOWait = process.maxTimeUntilIOWait;
-                processBehavior.MinIOWaitDuration = process.minIOWaitDuration;
-                processBehavior.MaxIOWaitDuration = process.maxIOWaitDuration;
-
-                processGO.transform.SetParent(this.transform, false);
-            }
+            process.transform.SetParent(contentTransform, false);
         }
 
-        public void AddProcess(ProcessBehavior process)
+        public void OnDrop(PointerEventData eventData)
         {
-            process.transform.SetParent(this.transform, false);
+            if (contentTransform == null)
+            {
+                return;
+            }
+
+            GameObject draggedObject = eventData.pointerDrag;
+            if (draggedObject == null)
+            {
+                return;
+            }
+
+            Draggable draggable = draggedObject.GetComponent<Draggable>();
+            if (draggable == null)
+            {
+                return;
+            }
+
+            ProcessBehavior process = draggedObject.GetComponent<ProcessBehavior>();
+            if (process != null)
+            {
+                bool acceptProcess = false;
+
+                switch (process.CurrentState)
+                {
+                    case ProcessBehavior.State.New:
+                        acceptProcess = true;
+                        process.CurrentState = ProcessBehavior.State.Ready;
+
+                        JobRequestContainerBehavior jobRequestContainer = draggable.ParentToReturnTo.GetComponentInParent<JobRequestContainerBehavior>();
+                        if (jobRequestContainer != null)
+                        {
+                            jobRequestContainer.SetProcess(null);
+                        }
+
+                        break;
+
+                    case ProcessBehavior.State.Ready:
+                        acceptProcess = true;
+                        break;
+
+                    case ProcessBehavior.State.Running:
+                        acceptProcess = true;
+                        process.CurrentState = ProcessBehavior.State.Ready;
+                        break;
+
+                    case ProcessBehavior.State.IOWait:
+                        break;
+
+                    case ProcessBehavior.State.Finished:
+                        break;
+                }
+
+                draggable.ShouldReturnToOriginalParent = !acceptProcess;
+
+                if (acceptProcess)
+                {
+                    AddProcess(process);
+                }
+            }
         }
     }
 }

@@ -24,35 +24,71 @@ namespace ProcessScheduling
         /// </summary>
         private GameManager gameManager;
 
+        /// <summary>
+        /// Function called when an attempt to drop a game object
+        /// to this game object was done
+        /// </summary>
+        /// <param name="eventData">Data related to the drop event</param>
         public void OnDrop(PointerEventData eventData)
         {
-            GameObject draggedObject = eventData.pointerDrag;
-            if (draggedObject != null)
+            if (dropDestinationTransform == null)
             {
-                ProcessBehavior process = draggedObject.GetComponent<ProcessBehavior>();
-                if (process != null)
-                {
-                    if (process.CurrentState == ProcessBehavior.State.IOWait)
-                    {
-                        draggedObject.transform.SetParent(dropDestinationTransform);
-                        draggedObject.transform.localPosition = Vector3.zero;
-
-                        Draggable draggable = draggedObject.GetComponent<Draggable>();
-                        if (draggable != null)
-                        {
-                            draggable.ShouldReturnToOriginalParent = false;
-                            CPUBehavior cpuBehavior = draggable.ParentToReturnTo.GetComponentInParent<CPUBehavior>();
-                            if (cpuBehavior != null)
-                            {
-                                cpuBehavior.CurrentProcess = null;
-                                cpuBehavior.ChangeState(CPUBehavior.State.Idle);
-                            }
-                        }
-
-                        processList.Add(process);
-                    }
-                }
+                return;
             }
+
+            GameObject draggedObject = eventData.pointerDrag;
+            if (draggedObject == null)
+            {
+                return;
+            }
+
+            Draggable draggable = draggedObject.GetComponent<Draggable>();
+            if (draggable == null)
+            {
+                return;
+            }
+
+            ProcessBehavior process = draggedObject.GetComponent<ProcessBehavior>();
+            if (process == null)
+            {
+                return;
+            }
+
+            bool acceptProcess = false;
+
+            switch (process.CurrentState)
+            {
+                case ProcessBehavior.State.New:
+                case ProcessBehavior.State.Ready:
+                case ProcessBehavior.State.Running:
+                    break;
+
+                case ProcessBehavior.State.IOWait:
+                    acceptProcess = true;
+
+                    CPUBehavior cpuBehavior = draggable.ParentToReturnTo.GetComponentInParent<CPUBehavior>();
+                    if (cpuBehavior != null)
+                    {
+                        cpuBehavior.CurrentProcess = null;
+                        cpuBehavior.ChangeState(CPUBehavior.State.Idle);
+                    }
+
+                    break;
+
+                case ProcessBehavior.State.Terminated:
+                case ProcessBehavior.State.Finished:
+                    break;
+            }
+
+            if (acceptProcess)
+            {
+                draggedObject.transform.SetParent(dropDestinationTransform);
+                draggedObject.transform.localPosition = Vector3.zero;
+
+                processList.Add(process);
+            }
+
+            draggable.ShouldReturnToOriginalParent = !acceptProcess;
         }
 
         /// <summary>

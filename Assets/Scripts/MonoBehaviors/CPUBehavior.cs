@@ -46,39 +46,61 @@ namespace ProcessScheduling
             }
 
             GameObject draggedObject = eventData.pointerDrag;
-            if (draggedObject != null)
+            if (draggedObject == null)
             {
-                ProcessBehavior process = draggedObject.GetComponent<ProcessBehavior>();
-                if (process != null)
+                return;
+            }
+
+            Draggable draggable = draggedObject.GetComponent<Draggable>();
+            if (draggable == null)
+            {
+                return;
+            }
+
+            ProcessBehavior process = draggedObject.GetComponent<ProcessBehavior>();
+            if (process != null)
+            {
+                bool acceptProcess = false;
+
+                switch (process.CurrentState)
                 {
+                    case ProcessBehavior.State.New:
+                        break;
+
+                    case ProcessBehavior.State.Ready:
+                        acceptProcess = true;
+                        break;
+
+                    case ProcessBehavior.State.Running:
+                    case ProcessBehavior.State.IOWait:
+                    case ProcessBehavior.State.Terminated:
+                    case ProcessBehavior.State.Finished:
+                        break;
+                }
+
+                if (acceptProcess)
+                {
+                    draggedObject.transform.SetParent(dropDestinationTransform);
+                    draggedObject.transform.localPosition = Vector3.zero;
+
                     if (CurrentState == State.Idle)
                     {
-                        draggedObject.transform.SetParent(dropDestinationTransform);
-                        draggedObject.transform.localPosition = Vector3.zero;
-
                         CurrentState = State.Running;
                     }
                     else if (CurrentState == State.Running)
                     {
-                        draggedObject.transform.SetParent(dropDestinationTransform);
-                        draggedObject.transform.localPosition = Vector3.zero;
-
                         if (CurrentProcess.CurrentState == ProcessBehavior.State.Running)
                         {
                             CurrentProcess.CurrentState = ProcessBehavior.State.Ready;
                         }
-                        
+
                         gameManager.AddProcessToJobQueue(CurrentProcess);
                     }
-                    
+
                     CurrentProcess = process;
                 }
 
-                Draggable draggable = draggedObject.GetComponent<Draggable>();
-                if (draggable != null)
-                {
-                    draggable.ShouldReturnToOriginalParent = false;
-                }
+                draggable.ShouldReturnToOriginalParent = !acceptProcess;
             }
         }
 
