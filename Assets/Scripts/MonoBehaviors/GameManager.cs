@@ -12,6 +12,8 @@ namespace ProcessScheduling
 
         public int numFinishedProcesses = 0;
 
+        public int numMissedProcesses = 0;
+
         public int score = 0;
 
         private float timer = 0.0f;
@@ -88,12 +90,17 @@ namespace ProcessScheduling
             if (processBehavior != null)
             {
                 processBehavior.Name = process.name;
-                processBehavior.CurrentState = ProcessBehavior.State.New;
                 processBehavior.RemainingBurstTime = Random.Range(process.minBurstTime, process.maxBurstTime);
                 processBehavior.MinTimeUntilIOWait = process.minTimeUntilIOWait;
                 processBehavior.MaxTimeUntilIOWait = process.maxTimeUntilIOWait;
                 processBehavior.MinIOWaitDuration = process.minIOWaitDuration;
                 processBehavior.MaxIOWaitDuration = process.maxIOWaitDuration;
+
+                bool hasDeadline = Random.Range(0, 2) == 0;
+                if (hasDeadline)
+                {
+                    processBehavior.ExecutionDeadline = 10;
+                }
             }
 
             return processBehavior;

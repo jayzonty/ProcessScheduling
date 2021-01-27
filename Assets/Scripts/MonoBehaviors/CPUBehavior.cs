@@ -91,7 +91,7 @@ namespace ProcessScheduling
                     {
                         if (CurrentProcess.CurrentState == ProcessBehavior.State.Running)
                         {
-                            CurrentProcess.CurrentState = ProcessBehavior.State.Ready;
+                            CurrentProcess.ChangeState(ProcessBehavior.State.Ready);
                         }
 
                         gameManager.AddProcessToJobQueue(CurrentProcess);

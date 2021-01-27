@@ -18,7 +18,7 @@ namespace ProcessScheduling
         public State CurrentState
         {
             get;
-            set;
+            private set;
         }
 
         public Text processNameText;
@@ -60,10 +60,16 @@ namespace ProcessScheduling
             set;
         }
 
-        public int Deadline
+        public int ExecutionDeadline
         {
             get;
             set;
+        }
+
+        public int ExecutionDeadlineTimer
+        {
+            get;
+            private set;
         }
 
         public int TurnaroundTime
@@ -79,6 +85,8 @@ namespace ProcessScheduling
 
         private TimeManager timeManager = null;
 
+        private GameManager gameManager = null;
+
         private CanvasGroup canvasGroup;
 
         public bool IsVisible
@@ -92,6 +100,38 @@ namespace ProcessScheduling
             {
                 canvasGroup.alpha = value ? 1.0f : 0.0f;
             }
+        }
+
+        public void ChangeState(State newState)
+        {
+            if (CurrentState == newState)
+            {
+                return;
+            }
+
+            switch (newState)
+            {
+                case State.New:
+                    break;
+
+                case State.Ready:
+                    ExecutionDeadlineTimer = ExecutionDeadline;
+                    break;
+
+                case State.Running:
+                    break;
+
+                case State.IOWait:
+                    break;
+
+                case State.Terminated:
+                    break;
+
+                case State.Finished:
+                    break;
+            }
+
+            CurrentState = newState;
         }
 
         public void Execute(int deltaTime)
@@ -145,9 +185,11 @@ namespace ProcessScheduling
         {
             timeManager = GameObject.FindObjectOfType<TimeManager>();
 
+            gameManager = GameObject.FindObjectOfType<GameManager>();
+            
             canvasGroup = GetComponent<CanvasGroup>();
 
-            CurrentState = State.Ready;
+            CurrentState = State.New;
         }
 
         private void Start()
@@ -176,6 +218,31 @@ namespace ProcessScheduling
 
         private void TimeManager_TimerTick(int tick)
         {
+            switch (CurrentState)
+            {
+                case State.New:
+                    break;
+
+                case State.Ready:
+                    if (ExecutionDeadline > 0)
+                    {
+                        --ExecutionDeadlineTimer;
+                        if (ExecutionDeadlineTimer <= 0)
+                        {
+                            ++gameManager.numMissedProcesses;
+                            Destroy(gameObject);
+                        }
+                    }
+
+                    break;
+
+                case State.Running:
+                case State.IOWait:
+                case State.Terminated:
+                case State.Finished:
+                    break;
+            }
+
             if (processNameText != null)
             {
                 processNameText.text = Name;
@@ -186,9 +253,9 @@ namespace ProcessScheduling
                 string info = "Burst: " + RemainingBurstTime.ToString() + "\n";
                 info += "State: " + CurrentState.ToString() + "\n";
                 info += "Time in system: " + TurnaroundTime.ToString();
-                if (Deadline > 0.0f)
+                if (ExecutionDeadline > 0.0f)
                 {
-                    info += "\nDeadline: " + Deadline.ToString();
+                    info += "\nDeadline: " + ExecutionDeadlineTimer.ToString();
                 }
                 processInfoText.text = info;
             }

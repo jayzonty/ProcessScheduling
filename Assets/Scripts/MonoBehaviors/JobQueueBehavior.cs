@@ -45,7 +45,7 @@ namespace ProcessScheduling
                 {
                     case ProcessBehavior.State.New:
                         acceptProcess = true;
-                        process.CurrentState = ProcessBehavior.State.Ready;
+                        process.ChangeState(ProcessBehavior.State.Ready);
 
                         JobRequestContainerBehavior jobRequestContainer = draggable.ParentToReturnTo.GetComponentInParent<JobRequestContainerBehavior>();
                         if (jobRequestContainer != null)
@@ -61,7 +61,7 @@ namespace ProcessScheduling
 
                     case ProcessBehavior.State.Running:
                         acceptProcess = true;
-                        process.CurrentState = ProcessBehavior.State.Ready;
+                        process.ChangeState(ProcessBehavior.State.Ready);
                         break;
 
                     case ProcessBehavior.State.IOWait:

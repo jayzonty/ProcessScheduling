@@ -8,15 +8,18 @@ namespace ProcessScheduling
     public class InfoPanelBehavior : MonoBehaviour
     {
         public Text finishedProcessText;
+        public Text missedProcessesText;
         public Text scoreText;
         public Text timeText;
 
         private GameManager gameManager;
+        private LevelManager levelManager;
         private TimeManager timeManager;
 
         private void Awake()
         {
             gameManager = GameObject.FindObjectOfType<GameManager>();
+            levelManager = GameObject.FindObjectOfType<LevelManager>();
             timeManager = GameObject.FindObjectOfType<TimeManager>();
         }
 
@@ -30,6 +33,11 @@ namespace ProcessScheduling
             if (finishedProcessText != null)
             {
                 finishedProcessText.text = "Finished: " + gameManager.numFinishedProcesses;
+            }
+
+            if (missedProcessesText != null)
+            {
+                missedProcessesText.text = "Missed: " + gameManager.numMissedProcesses + "/" + levelManager.maxMissableProcesses;
             }
 
             if (scoreText != null)
