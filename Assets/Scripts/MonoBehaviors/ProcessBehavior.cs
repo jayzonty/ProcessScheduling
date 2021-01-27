@@ -176,7 +176,7 @@ namespace ProcessScheduling
                 timeUntilIOReceive = Mathf.Max(0, timeUntilIOReceive - 1);
                 if (timeUntilIOReceive == 0.0f)
                 {
-                    CurrentState = State.Ready;
+                    ChangeState(State.Ready);
                 }
             }
         }
@@ -230,6 +230,7 @@ namespace ProcessScheduling
                         if (ExecutionDeadlineTimer <= 0)
                         {
                             ++gameManager.numMissedProcesses;
+                            --gameManager.NumProcessesInSystem;
                             Destroy(gameObject);
                         }
                     }

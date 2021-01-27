@@ -37,7 +37,7 @@ namespace ProcessScheduling
 
             if (missedProcessesText != null)
             {
-                missedProcessesText.text = "Missed: " + gameManager.numMissedProcesses + "/" + levelManager.maxMissableProcesses;
+                missedProcessesText.text = "Missed: " + gameManager.numMissedProcesses + "/" + gameManager.maxMissableProcesses;
             }
 
             if (scoreText != null)

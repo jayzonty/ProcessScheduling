@@ -158,6 +158,7 @@ namespace ProcessScheduling
                             statusText.text = "Idle";
 
                             ++gameManager.numFinishedProcesses;
+                            --gameManager.NumProcessesInSystem;
                         }
                     }
                     else if (CurrentState == State.ContextSwitch)

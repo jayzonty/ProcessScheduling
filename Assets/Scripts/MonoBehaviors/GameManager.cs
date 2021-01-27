@@ -14,13 +14,21 @@ namespace ProcessScheduling
 
         public int numMissedProcesses = 0;
 
+        public int maxMissableProcesses = 5;
+
+        public int initialProcessorCount = 2;
+
+        public int NumProcessesInSystem
+        {
+            get;
+            set;
+        } = 0;
+
         public int score = 0;
 
         private float timer = 0.0f;
 
         private JobQueueBehavior jobQueueBehavior;
-
-        private JobRequestContainerBehavior jobRequestContainerBehavior;
 
         public int NumCPUs
         {
@@ -53,8 +61,14 @@ namespace ProcessScheduling
         private void Awake()
         {
             jobQueueBehavior = GameObject.FindObjectOfType<JobQueueBehavior>();
+        }
 
-            jobRequestContainerBehavior = GameObject.FindObjectOfType<JobRequestContainerBehavior>();
+        private void Start()
+        {
+            if (cpuList != null)
+            {
+                cpuList.SetNumCPUs(initialProcessorCount);
+            }
         }
 
         private void Update()
@@ -64,13 +78,16 @@ namespace ProcessScheduling
             {
                 timer = 5.0f;
 
-                if (jobRequestContainerBehavior != null)
+                if (jobQueueBehavior != null)
                 {
-                    if (jobRequestContainerBehavior.CurrentProcess == null)
+                    if (NumProcessesInSystem < 5)
                     {
                         Process processToSpawn = processList.processes[Random.Range(0, processList.processes.Count)];
                         ProcessBehavior processRequest = CreateProcessBehavior(processToSpawn);
-                        jobRequestContainerBehavior.SetProcess(processRequest);
+                        processRequest.ChangeState(ProcessBehavior.State.Ready);
+                        jobQueueBehavior.AddProcess(processRequest);
+
+                        ++NumProcessesInSystem;
                     }
                 }
             }
