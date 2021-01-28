@@ -47,7 +47,7 @@ namespace ProcessScheduling
 
             if (timeManager != null)
             {
-                timeText.text = "Time: " + timeManager.CurrentGameTime + " (x" + timeManager.timeMultiplier.ToString("F1") + ")";
+                timeText.text = "Time: " + gameManager.timeLimit + " (x" + timeManager.timeMultiplier.ToString("F1") + ")";
             }
         }
     }
