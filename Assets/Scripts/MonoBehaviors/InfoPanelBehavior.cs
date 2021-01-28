@@ -37,7 +37,7 @@ namespace ProcessScheduling
 
             if (missedProcessesText != null)
             {
-                missedProcessesText.text = "Missed: " + gameManager.numMissedProcesses + "/" + gameManager.maxMissableProcesses;
+                missedProcessesText.text = "Missed: " + gameManager.numMissedProcesses + "/" + gameManager.levelData.maxMissableProcesses;
             }
 
             if (scoreText != null)
@@ -47,7 +47,7 @@ namespace ProcessScheduling
 
             if (timeManager != null)
             {
-                timeText.text = "Time: " + gameManager.timeLimit + " (x" + timeManager.timeMultiplier.ToString("F1") + ")";
+                timeText.text = "Time: " + gameManager.remainingTime + " (x" + timeManager.timeMultiplier.ToString("F1") + ")";
             }
         }
     }

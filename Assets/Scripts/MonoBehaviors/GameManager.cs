@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+
+using UnityEngine;
 
 namespace ProcessScheduling
 {
@@ -10,17 +12,13 @@ namespace ProcessScheduling
 
         public CPUListBehavior cpuList;
 
+        public LevelData levelData;
+
         public int numFinishedProcesses = 0;
 
         public int numMissedProcesses = 0;
 
-        public int maxMissableProcesses = 5;
-
-        public int initialProcessorCount = 2;
-
-        public int timeLimit = 180;
-
-        public bool hasTimeLimit = true;
+        public int remainingTime = 180;
 
         public int NumProcessesInSystem
         {
@@ -69,6 +67,19 @@ namespace ProcessScheduling
             jobQueueBehavior = GameObject.FindObjectOfType<JobQueueBehavior>();
 
             timeManager = GameObject.FindObjectOfType<TimeManager>();
+
+            // TODO: Move this somewhere
+            levelData = new LevelData();
+            levelData.numProcessors = 2;
+            levelData.timeLimit = 10;
+
+            // Set up level stop conditions (timeLimit <= 0 || numMissedProcesses >= levelData.maxMissableProcesses)
+            levelData.levelStopConditions = new List<Condition>();
+            levelData.levelStopConditions.Add(new Condition { targetAttributeName = "remainingTime", operation = Condition.ComparisonOperation.LessThanEqual, comparisonValue = 0 });
+            levelData.levelStopConditions.Add(new Condition { targetAttributeName = "numMissedProcesses", operation = Condition.ComparisonOperation.GreaterThanEqual, comparisonValue = levelData.maxMissableProcesses });
+
+            levelData.winConditions = new List<Condition>();
+            levelData.winConditions.Add(new Condition { targetAttributeName = "numMissedProcesses", operation = Condition.ComparisonOperation.LessThan, comparisonValue = 5 });
         }
 
         private void OnEnable()
@@ -89,10 +100,17 @@ namespace ProcessScheduling
 
         private void Start()
         {
+            if (levelData == null)
+            {
+                Debug.LogError("Level data is null!");
+            }
+
             if (cpuList != null)
             {
-                cpuList.SetNumCPUs(initialProcessorCount);
+                cpuList.SetNumCPUs(levelData.numProcessors);
             }
+
+            remainingTime = levelData.timeLimit;
         }
 
         private void Update()
@@ -149,9 +167,9 @@ namespace ProcessScheduling
 
         private void TimeManager_TimerTick(int tick)
         {
-            if (hasTimeLimit)
+            if (levelData.timeLimit > 0)
             {
-                timeLimit = Mathf.Max(timeLimit - 1, 0);
+                remainingTime = Mathf.Max(remainingTime - 1, 0);
 
                 if (CheckLevelStopConditions())
                 {
@@ -163,6 +181,8 @@ namespace ProcessScheduling
                     {
                         Debug.Log("Game Over! Failed!");
                     }
+
+                    timeManager.PauseTimer();
                 }
             }
         }
@@ -173,10 +193,7 @@ namespace ProcessScheduling
         /// <returns></returns>
         private bool CheckLevelStopConditions()
         {
-            // For now, just see if the time limit has expired,
-            // or if the number of missed processes have exceeded the maximum.
-            // TODO: Have a list of conditions to check
-            return (timeLimit == 0) || (numMissedProcesses >= maxMissableProcesses);
+            return CheckOneConditionSatisfied(levelData.levelStopConditions);
         }
 
         /// <summary>
@@ -185,9 +202,88 @@ namespace ProcessScheduling
         /// <returns>Returns true if the win conditions have been met. False otherwise.</returns>
         private bool CheckWinConditions()
         {
-            // For now, just check if the number of missed processes do not exceed the max.
-            // TODO: Have a list of conditions to check
-            return numMissedProcesses < maxMissableProcesses;
+            return CheckAllConditionsSatisfied(levelData.winConditions);
+        }
+
+        public bool CheckOneConditionSatisfied(List<Condition> conditions)
+        {
+            if (conditions == null)
+            {
+                return true;
+            }
+
+            foreach (Condition condition in conditions)
+            {
+                if (CheckCondition(condition))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool CheckAllConditionsSatisfied(List<Condition> conditions)
+        {
+            if (conditions == null)
+            {
+                return true;
+            }
+
+            foreach (Condition condition in conditions)
+            {
+                if (!CheckCondition(condition))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private bool CheckCondition(Condition condition)
+        {
+            int lhs = 0;
+            switch (condition.targetAttributeName)
+            {
+                case "remainingTime":
+                    lhs = remainingTime;
+                    break;
+
+                case "numMissedProcesses":
+                    lhs = numMissedProcesses;
+                    break;
+            }
+
+            bool retValue = false;
+            switch (condition.operation)
+            {
+                case Condition.ComparisonOperation.Equal:
+                    retValue = (lhs == condition.comparisonValue);
+                    break;
+
+                case Condition.ComparisonOperation.NotEqual:
+                    retValue = (lhs != condition.comparisonValue);
+                    break;
+
+                case Condition.ComparisonOperation.LessThan:
+                    retValue = (lhs < condition.comparisonValue);
+                    break;
+
+                case Condition.ComparisonOperation.LessThanEqual:
+                    retValue = (lhs <= condition.comparisonValue);
+                    break;
+
+                case Condition.ComparisonOperation.GreaterThan:
+                    retValue = (lhs > condition.comparisonValue);
+                    break;
+
+                case Condition.ComparisonOperation.GreaterThanEqual:
+                    retValue = (lhs >= condition.comparisonValue);
+                    break;
+            }
+
+            return retValue;
         }
     }
 }
