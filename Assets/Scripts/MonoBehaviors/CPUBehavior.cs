@@ -30,6 +30,15 @@ namespace ProcessScheduling
             private set;
         } = State.Idle;
 
+        /// <summary>
+        /// Total time spent by this CPU executing a process
+        /// </summary>
+        public int TotalTimeRunning
+        {
+            get;
+            private set;
+        } = 0;
+
         private TimeManager timeManager;
 
         private GameManager gameManager;
@@ -152,16 +161,21 @@ namespace ProcessScheduling
                         }
                         else if (CurrentProcess.CurrentState == ProcessBehavior.State.Finished)
                         {
-                            Destroy(CurrentProcess.gameObject);
-                            CurrentProcess = null;
-
                             CurrentState = State.Idle;
                             statusText.enabled = true;
                             statusText.text = "Idle";
 
                             ++gameManager.numFinishedProcesses;
                             --gameManager.NumProcessesInSystem;
+
+                            gameManager.TotalWaitingTime += CurrentProcess.WaitingTime;
+                            gameManager.TotalTurnaroundTime += CurrentProcess.TurnaroundTime;
+
+                            Destroy(CurrentProcess.gameObject);
+                            CurrentProcess = null;
                         }
+
+                        ++TotalTimeRunning;
                     }
                     else if (CurrentState == State.ContextSwitch)
                     {

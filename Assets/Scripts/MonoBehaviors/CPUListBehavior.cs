@@ -6,12 +6,16 @@ namespace ProcessScheduling
     {
         public int initialCPUCount = 2;
 
-        private CPUBehavior[] cpus;
+        public CPUBehavior[] CPUs
+        {
+            get;
+            private set;
+        }
         
         public int GetNumCPUs()
         {
             int ret = 0;
-            foreach (CPUBehavior cpu in cpus)
+            foreach (CPUBehavior cpu in CPUs)
             {
                 if (cpu.gameObject.activeInHierarchy)
                 {
@@ -24,24 +28,24 @@ namespace ProcessScheduling
 
         public void SetNumCPUs(int numCPUs)
         {
-            int maxCPUs = cpus.Length;
+            int maxCPUs = CPUs.Length;
 
             numCPUs = Mathf.Min(numCPUs, maxCPUs);
             
             for (int i = 0; i < numCPUs; ++i)
             {
-                cpus[i].gameObject.SetActive(true);
+                CPUs[i].gameObject.SetActive(true);
             }
 
             for (int i = numCPUs; i < maxCPUs; ++i)
             {
-                cpus[i].gameObject.SetActive(false);
+                CPUs[i].gameObject.SetActive(false);
             }
         }
 
         private void Awake()
         {
-            cpus = GetComponentsInChildren<CPUBehavior>();
+            CPUs = GetComponentsInChildren<CPUBehavior>();
             SetNumCPUs(initialCPUCount);
         }
     }

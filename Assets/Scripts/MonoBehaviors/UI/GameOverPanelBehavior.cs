@@ -9,6 +9,11 @@ namespace ProcessScheduling
     public class GameOverPanelBehavior : MonoBehaviour
     {
         /// <summary>
+        /// Reference to the text displaying the time elapsed
+        /// </summary>
+        public Text timeElapsedText;
+
+        /// <summary>
         /// Reference to the text displaying the number of finished processes
         /// </summary>
         public Text finishedProcessesText;
@@ -36,7 +41,7 @@ namespace ProcessScheduling
         /// <summary>
         /// Reference to the text displaying the average turnaround time
         /// </summary>
-        public Text averageTurnaroundTime;
+        public Text averageTurnaroundTimeText;
 
         /// <summary>
         /// Reference to the canvas group component
@@ -58,10 +63,12 @@ namespace ProcessScheduling
             {
                 if (isVisible)
                 {
+                    OnShow();
                     canvasGroup.alpha = 1.0f;
                 }
                 else
                 {
+                    OnHide();
                     canvasGroup.alpha = 0.0f;
                 }
             }
@@ -72,6 +79,63 @@ namespace ProcessScheduling
         /// </summary>
         private void OnShow()
         {
+            if (gameManager == null)
+            {
+                return;
+            }
+
+            if (timeElapsedText != null)
+            {
+                timeElapsedText.text = "Time Elapsed: " + gameManager.TimeElapsed;
+            }
+
+            if (finishedProcessesText != null)
+            {
+                finishedProcessesText.text = "Finished processes: " + gameManager.numFinishedProcesses;
+            }
+
+            if (missedProcessesText != null)
+            {
+                missedProcessesText.text = "Missed processes: " + gameManager.numMissedProcesses;
+                if (gameManager.levelData.maxMissableProcesses > 0)
+                {
+                    missedProcessesText.text += "/" + gameManager.levelData.maxMissableProcesses;
+                }
+            }
+
+            if (cpuUtilizationText != null)
+            {
+                float cpuUtilization = gameManager.CPUUtilization;
+                cpuUtilizationText.text = "CPU Utilization: " + Mathf.FloorToInt(cpuUtilization * 100.0f);
+            }
+
+            if (throughputText != null)
+            {
+                float throughput = (gameManager.numFinishedProcesses * 1.0f) / gameManager.TimeElapsed;
+                throughputText.text = throughput.ToString("F2") + " processes per second";
+            }
+
+            if (averageWaitingTimeText != null)
+            {
+                float averageWaitingTime = 0.0f;
+                if (gameManager.numFinishedProcesses > 0)
+                {
+                    averageWaitingTime = (gameManager.TotalWaitingTime * 1.0f) / gameManager.numFinishedProcesses;
+                }
+
+                averageWaitingTimeText.text = "Average waiting time: " + averageWaitingTime.ToString("F2") + " seconds";
+            }
+
+            if (averageTurnaroundTimeText != null)
+            {
+                float averageTurnaroundTime = 0.0f;
+                if (gameManager.numFinishedProcesses > 0)
+                {
+                    averageTurnaroundTime = (gameManager.TotalTurnaroundTime * 1.0f) / gameManager.numFinishedProcesses;
+                }
+
+                averageTurnaroundTimeText.text = "Average turnaround time: " + averageTurnaroundTime.ToString("F2") + " seconds";
+            }
         }
 
         /// <summary>

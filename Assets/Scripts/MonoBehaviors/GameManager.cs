@@ -20,11 +20,70 @@ namespace ProcessScheduling
 
         public int remainingTime = 180;
 
+        /// <summary>
+        /// Number of processes currently in the system
+        /// </summary>
         public int NumProcessesInSystem
         {
             get;
             set;
         } = 0;
+
+        /// <summary>
+        /// Total waiting time
+        /// </summary>
+        public int TotalWaitingTime
+        {
+            get;
+            set;
+        } = 0;
+
+        /// <summary>
+        /// Total turnaround time
+        /// </summary>
+        public int TotalTurnaroundTime
+        {
+            get;
+            set;
+        } = 0;
+
+        /// <summary>
+        /// Time elapsed since the level started
+        /// </summary>
+        public int TimeElapsed
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// CPU Utilization (in percentage [0.0, 1.0])
+        /// </summary>
+        public float CPUUtilization
+        {
+            get
+            {
+                if (cpuList.CPUs != null)
+                {
+                    if (cpuList.GetNumCPUs() == 0)
+                    {
+                        return 0.0f;
+                    }
+
+                    int totalCPURunningTime = 0;
+
+                    foreach (CPUBehavior cpuBehavior in cpuList.CPUs)
+                    {
+                        totalCPURunningTime += cpuBehavior.TotalTimeRunning;
+                    }
+
+                    float cpuUtilization = (totalCPURunningTime * 1.0f) / (TimeElapsed * cpuList.GetNumCPUs());
+                    return cpuUtilization;
+                }
+
+                return 0.0f;
+            }
+        }
 
         public int score = 0;
 
@@ -33,6 +92,8 @@ namespace ProcessScheduling
         private JobQueueBehavior jobQueueBehavior;
 
         private TimeManager timeManager;
+
+        private GameOverPanelBehavior gameOverPanelBehavior;
 
         public int NumCPUs
         {
@@ -67,6 +128,8 @@ namespace ProcessScheduling
             jobQueueBehavior = GameObject.FindObjectOfType<JobQueueBehavior>();
 
             timeManager = GameObject.FindObjectOfType<TimeManager>();
+
+            gameOverPanelBehavior = GameObject.FindObjectOfType<GameOverPanelBehavior>();
 
             // TODO: Move this somewhere
             levelData = new LevelData();
@@ -183,8 +246,15 @@ namespace ProcessScheduling
                     }
 
                     timeManager.PauseTimer();
+
+                    if (gameOverPanelBehavior != null)
+                    {
+                        gameOverPanelBehavior.SetVisible(true);
+                    }
                 }
             }
+            
+            ++TimeElapsed;
         }
 
         /// <summary>

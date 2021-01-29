@@ -112,6 +112,15 @@ namespace ProcessScheduling
         }
 
         /// <summary>
+        /// Property for the waiting time
+        /// </summary>
+        public int WaitingTime
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// Process name
         /// </summary>
         private string processName;
@@ -284,6 +293,8 @@ namespace ProcessScheduling
                             Destroy(gameObject);
                         }
                     }
+
+                    ++WaitingTime;
 
                     break;
 
