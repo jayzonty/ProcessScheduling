@@ -27,18 +27,13 @@ namespace ProcessScheduling
         public void StartTimer()
         {
             m_tickCountdown = secondsPerTick;
-
             m_isPaused = false;
-
-            TimerTick?.Invoke(CurrentGameTime);
         }
 
         public void ResetTimer()
         {
             CurrentGameTime = 0;
             m_tickCountdown = secondsPerTick;
-
-            TimerTick?.Invoke(CurrentGameTime);
         }
 
         public void PauseTimer()

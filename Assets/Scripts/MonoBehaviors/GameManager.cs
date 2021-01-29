@@ -230,6 +230,8 @@ namespace ProcessScheduling
 
         private void TimeManager_TimerTick(int tick)
         {
+            ++TimeElapsed;
+
             if (levelData.timeLimit > 0)
             {
                 remainingTime = Mathf.Max(remainingTime - 1, 0);
@@ -253,8 +255,6 @@ namespace ProcessScheduling
                     }
                 }
             }
-            
-            ++TimeElapsed;
         }
 
         /// <summary>
