@@ -10,6 +10,18 @@ namespace ProcessScheduling
         public Transform dropDestinationTransform;
 
         /// <summary>
+        /// Minimum amount of time processes have to wait
+        /// before I/O requests are processed.
+        /// </summary>
+        public int minIOAvailbleTime = 5;
+
+        /// <summary>
+        /// Maximum amount of time processes have to wait
+        /// before I/O requests are processed.
+        /// </summary>
+        public int maxIOAvailableTime = 10;
+
+        /// <summary>
         /// Reference to the time manager script
         /// </summary>
         private TimeManager timeManager = null;
@@ -23,6 +35,11 @@ namespace ProcessScheduling
         /// Reference to the game manager script
         /// </summary>
         private GameManager gameManager;
+
+        /// <summary>
+        /// Timer until I/O processing is available
+        /// </summary>
+        private int timerUntilIOAvailable;
 
         /// <summary>
         /// Function called when an attempt to drop a game object
@@ -128,6 +145,15 @@ namespace ProcessScheduling
         }
 
         /// <summary>
+        /// Unity callback function called before the first
+        /// Update() call.
+        /// </summary>
+        private void Start()
+        {
+            timerUntilIOAvailable = Random.Range(minIOAvailbleTime, maxIOAvailableTime + 1);
+        }
+
+        /// <summary>
         /// Callback function per in-game time tick
         /// </summary>
         /// <param name="ticksSinceStart">Number of ticks since the in-game timer started</param>
@@ -138,24 +164,17 @@ namespace ProcessScheduling
                 // Get the first process in the queue
                 ProcessBehavior process = processList[0];
 
-                switch (process.CurrentState)
+                timerUntilIOAvailable = Mathf.Max(timerUntilIOAvailable - 1, 0);
+
+                if (timerUntilIOAvailable <= 0)
                 {
-                    case ProcessBehavior.State.IOWait:
-                        process.ExecuteIO(1);
-                        break;
+                    process.ChangeState(ProcessBehavior.State.Ready);
+                    gameManager.AddProcessToJobQueue(process);
 
-                    case ProcessBehavior.State.Ready:
-                        if (gameManager != null)
-                        {
-                            gameManager.AddProcessToJobQueue(process);
-                        }
+                    timerUntilIOAvailable = Random.Range(minIOAvailbleTime, maxIOAvailableTime + 1);
 
-                        // Remove the first element from the queue
-                        processList.RemoveAt(0);
-                        break;
-
-                    default:
-                        break;
+                    // Remove the first element from the queue
+                    processList.RemoveAt(0);
                 }
             }
         }
