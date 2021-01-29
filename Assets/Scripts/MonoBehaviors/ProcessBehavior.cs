@@ -24,16 +24,38 @@ namespace ProcessScheduling
         public Text processNameText;
         public Text processInfoText;
 
+        /// <summary>
+        /// Property for the process name
+        /// </summary>
         public string Name
         {
-            get;
-            set;
+            get
+            {
+                return processName;
+            }
+
+            set
+            {
+                processName = value;
+                UpdateInfoDisplay();
+            }
         }
 
+        /// <summary>
+        /// Property for the remaining burst time
+        /// </summary>
         public int RemainingBurstTime
         {
-            get;
-            set;
+            get
+            {
+                return remainingBurstTime;
+            }
+
+            set
+            {
+                remainingBurstTime = value;
+                UpdateInfoDisplay();
+            }
         }
 
         public int MinTimeUntilIOWait
@@ -66,10 +88,21 @@ namespace ProcessScheduling
             set;
         }
 
+        /// <summary>
+        /// Property for the execution deadline timer
+        /// </summary>
         public int ExecutionDeadlineTimer
         {
-            get;
-            private set;
+            get
+            {
+                return executionDeadlineTimer;
+            }
+
+            set
+            {
+                executionDeadlineTimer = value;
+                UpdateInfoDisplay();
+            }
         }
 
         public int TurnaroundTime
@@ -77,6 +110,21 @@ namespace ProcessScheduling
             get;
             private set;
         }
+
+        /// <summary>
+        /// Process name
+        /// </summary>
+        private string processName;
+
+        /// <summary>
+        /// Remaining burst time
+        /// </summary>
+        private int remainingBurstTime = 0;
+
+        /// <summary>
+        /// Execution deadline timer
+        /// </summary>
+        private int executionDeadlineTimer;
 
         private int timeUntilNextIOWait = 0;
         private int timeUntilIOReceive = 0;
@@ -132,6 +180,8 @@ namespace ProcessScheduling
             }
 
             CurrentState = newState;
+
+            UpdateInfoDisplay();
         }
 
         public void Execute(int deltaTime)
@@ -244,6 +294,13 @@ namespace ProcessScheduling
                     break;
             }
 
+            TurnaroundTime = timeManager.CurrentGameTime - startTime;
+
+            UpdateInfoDisplay();
+        }
+
+        private void UpdateInfoDisplay()
+        {
             if (processNameText != null)
             {
                 processNameText.text = Name;
@@ -260,8 +317,6 @@ namespace ProcessScheduling
                 }
                 processInfoText.text = info;
             }
-
-            TurnaroundTime = timeManager.CurrentGameTime - startTime;
         }
     }
 }

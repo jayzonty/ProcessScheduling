@@ -98,6 +98,8 @@ namespace ProcessScheduling
                     }
 
                     CurrentProcess = process;
+                    
+                    statusText.enabled = false;
                 }
 
                 draggable.ShouldReturnToOriginalParent = !acceptProcess;

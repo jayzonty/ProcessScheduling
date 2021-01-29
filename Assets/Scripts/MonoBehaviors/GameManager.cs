@@ -71,7 +71,7 @@ namespace ProcessScheduling
             // TODO: Move this somewhere
             levelData = new LevelData();
             levelData.numProcessors = 2;
-            levelData.timeLimit = 10;
+            levelData.timeLimit = 180;
 
             // Set up level stop conditions (timeLimit <= 0 || numMissedProcesses >= levelData.maxMissableProcesses)
             levelData.levelStopConditions = new List<Condition>();
