@@ -70,18 +70,6 @@ namespace ProcessScheduling
             set;
         }
 
-        public int MinIOWaitDuration
-        {
-            get;
-            set;
-        }
-
-        public int MaxIOWaitDuration
-        {
-            get;
-            set;
-        }
-
         public int ExecutionDeadline
         {
             get;
@@ -136,7 +124,6 @@ namespace ProcessScheduling
         private int executionDeadlineTimer;
 
         private int timeUntilNextIOWait = 0;
-        private int timeUntilIOReceive = 0;
 
         private int startTime;
 
@@ -212,7 +199,6 @@ namespace ProcessScheduling
                     {
                         CurrentState = State.IOWait;
                         timeUntilNextIOWait = Random.Range(MinTimeUntilIOWait, MaxTimeUntilIOWait + 1);
-                        timeUntilIOReceive = Random.Range(MinIOWaitDuration, MaxIOWaitDuration + 1);
                     }
                 }
                 else

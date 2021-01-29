@@ -215,8 +215,6 @@ namespace ProcessScheduling
                 processBehavior.RemainingBurstTime = Random.Range(process.minBurstTime, process.maxBurstTime);
                 processBehavior.MinTimeUntilIOWait = process.minTimeUntilIOWait;
                 processBehavior.MaxTimeUntilIOWait = process.maxTimeUntilIOWait;
-                processBehavior.MinIOWaitDuration = process.minIOWaitDuration;
-                processBehavior.MaxIOWaitDuration = process.maxIOWaitDuration;
 
                 bool hasDeadline = Random.Range(0, 2) == 0;
                 if (hasDeadline)

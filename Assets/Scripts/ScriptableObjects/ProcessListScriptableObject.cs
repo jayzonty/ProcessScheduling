@@ -14,9 +14,6 @@ namespace ProcessScheduling
 
         public int minTimeUntilIOWait;
         public int maxTimeUntilIOWait;
-
-        public int minIOWaitDuration;
-        public int maxIOWaitDuration;
     }
 
     [CreateAssetMenu(fileName = "ProcessList", menuName = "Game/ProcessList")]
