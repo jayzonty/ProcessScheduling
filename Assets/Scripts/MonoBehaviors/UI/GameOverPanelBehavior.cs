@@ -123,7 +123,7 @@ namespace ProcessScheduling
             if (cpuUtilizationText != null)
             {
                 float cpuUtilization = gameManager.CPUUtilization;
-                cpuUtilizationText.text = "CPU Utilization: " + Mathf.FloorToInt(cpuUtilization * 100.0f);
+                cpuUtilizationText.text = "CPU Utilization: " + Mathf.FloorToInt(cpuUtilization * 100.0f) + "%";
             }
 
             if (throughputText != null)
