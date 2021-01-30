@@ -12,8 +12,6 @@ namespace ProcessScheduling
 
         public CPUListBehavior cpuList;
 
-        public LevelData levelData;
-
         public int numFinishedProcesses = 0;
 
         public int numMissedProcesses = 0;
@@ -85,6 +83,12 @@ namespace ProcessScheduling
             }
         }
 
+        public LevelDataScriptableObject LevelData
+        {
+            get;
+            private set;
+        }
+
         public int score = 0;
 
         private float timer = 0.0f;
@@ -131,18 +135,11 @@ namespace ProcessScheduling
 
             gameOverPanelBehavior = GameObject.FindObjectOfType<GameOverPanelBehavior>();
 
-            // TODO: Move this somewhere
-            levelData = new LevelData();
-            levelData.numProcessors = 2;
-            levelData.timeLimit = 180;
-
-            // Set up level stop conditions (timeLimit <= 0 || numMissedProcesses >= levelData.maxMissableProcesses)
-            levelData.levelStopConditions = new List<Condition>();
-            levelData.levelStopConditions.Add(new Condition { targetAttributeName = "remainingTime", operation = Condition.ComparisonOperation.LessThanEqual, comparisonValue = 0 });
-            levelData.levelStopConditions.Add(new Condition { targetAttributeName = "numMissedProcesses", operation = Condition.ComparisonOperation.GreaterThanEqual, comparisonValue = levelData.maxMissableProcesses });
-
-            levelData.winConditions = new List<Condition>();
-            levelData.winConditions.Add(new Condition { targetAttributeName = "numMissedProcesses", operation = Condition.ComparisonOperation.LessThan, comparisonValue = 5 });
+            GameStateBehavior gameState = GameObject.FindObjectOfType<GameStateBehavior>();
+            if (gameState != null)
+            {
+                LevelData = gameState.LevelData;
+            }
         }
 
         private void OnEnable()
@@ -163,17 +160,17 @@ namespace ProcessScheduling
 
         private void Start()
         {
-            if (levelData == null)
+            if (LevelData == null)
             {
                 Debug.LogError("Level data is null!");
             }
 
             if (cpuList != null)
             {
-                cpuList.SetNumCPUs(levelData.numProcessors);
+                cpuList.SetNumCPUs(LevelData.initialProcessorCount);
             }
 
-            remainingTime = levelData.timeLimit;
+            remainingTime = LevelData.timeLimit;
         }
 
         private void Update()
@@ -230,7 +227,7 @@ namespace ProcessScheduling
         {
             ++TimeElapsed;
 
-            if (levelData.timeLimit > 0)
+            if (LevelData.timeLimit > 0)
             {
                 remainingTime = Mathf.Max(remainingTime - 1, 0);
 
@@ -261,7 +258,7 @@ namespace ProcessScheduling
         /// <returns></returns>
         private bool CheckLevelStopConditions()
         {
-            return CheckOneConditionSatisfied(levelData.levelStopConditions);
+            return CheckOneConditionSatisfied(LevelData.levelStopConditions);
         }
 
         /// <summary>
@@ -270,7 +267,7 @@ namespace ProcessScheduling
         /// <returns>Returns true if the win conditions have been met. False otherwise.</returns>
         private bool CheckWinConditions()
         {
-            return CheckAllConditionsSatisfied(levelData.winConditions);
+            return CheckAllConditionsSatisfied(LevelData.winConditions);
         }
 
         public bool CheckOneConditionSatisfied(List<Condition> conditions)

@@ -26,7 +26,7 @@ namespace ProcessScheduling
 
         private void ClickHandler()
         {
-            SceneManager.LoadScene("SampleScene");
+            SceneManager.LoadScene("LevelSelectScene");
         }
     }
 }
