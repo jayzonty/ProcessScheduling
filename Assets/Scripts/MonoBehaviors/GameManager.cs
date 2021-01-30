@@ -28,6 +28,15 @@ namespace ProcessScheduling
         } = 0;
 
         /// <summary>
+        /// Maximum number of processes in the system
+        /// </summary>
+        public int MaxProcessesInSystem
+        {
+            get;
+            private set;
+        } = 5;
+
+        /// <summary>
         /// Total waiting time
         /// </summary>
         public int TotalWaitingTime
@@ -180,6 +189,8 @@ namespace ProcessScheduling
 
             // 3-second delay before the first process spawn
             processSpawnTimer = 3;
+
+            MaxProcessesInSystem = LevelData.maxProcessesInSystem;
         }
 
         private ProcessBehavior CreateProcessBehavior(Process process)
@@ -243,7 +254,7 @@ namespace ProcessScheduling
                 processSpawnTimer = Mathf.Max(processSpawnTimer - 1, 0);
                 if (processSpawnTimer <= 0)
                 {
-                    if (NumProcessesInSystem < 5)
+                    if (NumProcessesInSystem < MaxProcessesInSystem)
                     {
                         if (jobQueueBehavior != null)
                         {

@@ -23,6 +23,7 @@ MonoBehaviour:
   timeLimit: 0
   initialProcessorCount: 4
   maxMissableProcesses: 5
+  maxProcessesInSystem: 8
   levelStopConditions:
   - targetAttributeName: numMissedProcesses
     comparisonValue: 5

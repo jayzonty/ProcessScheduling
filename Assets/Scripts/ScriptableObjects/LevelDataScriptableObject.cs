@@ -36,6 +36,11 @@ namespace ProcessScheduling
         public int maxMissableProcesses = 5;
 
         /// <summary>
+        /// Maximum number of processes in the system
+        /// </summary>
+        public int maxProcessesInSystem = 5;
+
+        /// <summary>
         /// Level stop conditions
         /// </summary>
         public List<Condition> levelStopConditions;
