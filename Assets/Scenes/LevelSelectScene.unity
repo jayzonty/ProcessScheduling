@@ -1514,5 +1514,4 @@ MonoBehaviour:
     type: 3}
   levelDataList:
   - {fileID: 11400000, guid: 4f7cd3254ce725543bf85b7584af793b, type: 2}
-  - {fileID: 11400000, guid: db6a396b55ccd7c47ab2a38819dc76b1, type: 2}
   - {fileID: 11400000, guid: 5cca3de28ce334441aeb3123ab1f563b, type: 2}

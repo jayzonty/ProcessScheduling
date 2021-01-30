@@ -10,12 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 88a13540d7897154e8df760749aab8ed, type: 3}
-  m_Name: Level2
+  m_Name: Normal
   m_EditorClassIdentifier: 
-  levelName: Level 2
-  levelDescription: Test level 2
-  timeLimit: 180
-  initialProcessorCount: 4
+  levelName: Normal
+  levelDescription: 'For this level, the goal is to complete as many processes as
+    you can within the time limit.
+
+
+    Time limit: 300 seconds
+
+    CPU count:
+    4
+
+    Max missable processes: 5
+
+    Minimum finished process: 10'
+  timeLimit: 300
+  initialProcessorCount: 2
   maxMissableProcesses: 5
   levelStopConditions:
   - targetAttributeName: numMissedProcesses
@@ -28,4 +39,7 @@ MonoBehaviour:
   - targetAttributeName: numMissedProcesses
     comparisonValue: 5
     operation: 2
+  - targetAttributeName: numFinishedProcesses
+    comparisonValue: 10
+    operation: 5
   processTemplates: []

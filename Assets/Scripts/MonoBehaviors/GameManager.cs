@@ -216,47 +216,47 @@ namespace ProcessScheduling
             if (LevelData.timeLimit > 0)
             {
                 remainingTime = Mathf.Max(remainingTime - 1, 0);
+            }
 
-                if (CheckLevelStopConditions())
+            if (CheckLevelStopConditions())
+            {
+                if (CheckWinConditions())
                 {
-                    if (CheckWinConditions())
-                    {
-                        Debug.Log("Game Over! Success!");
-                        IsSuccess = true;
-                    }
-                    else
-                    {
-                        Debug.Log("Game Over! Failed!");
-                        IsSuccess = false;
-                    }
-
-                    timeManager.PauseTimer();
-
-                    if (gameOverPanelBehavior != null)
-                    {
-                        gameOverPanelBehavior.SetVisible(true);
-                    }
+                    Debug.Log("Game Over! Success!");
+                    IsSuccess = true;
                 }
                 else
                 {
-                    processSpawnTimer = Mathf.Max(processSpawnTimer - 1, 0);
-                    if (processSpawnTimer <= 0)
+                    Debug.Log("Game Over! Failed!");
+                    IsSuccess = false;
+                }
+
+                timeManager.PauseTimer();
+
+                if (gameOverPanelBehavior != null)
+                {
+                    gameOverPanelBehavior.SetVisible(true);
+                }
+            }
+            else
+            {
+                processSpawnTimer = Mathf.Max(processSpawnTimer - 1, 0);
+                if (processSpawnTimer <= 0)
+                {
+                    if (NumProcessesInSystem < 5)
                     {
-                        if (NumProcessesInSystem < 5)
+                        if (jobQueueBehavior != null)
                         {
-                            if (jobQueueBehavior != null)
-                            {
-                                Process processToSpawn = processList.processes[Random.Range(0, processList.processes.Count)];
-                                ProcessBehavior processRequest = CreateProcessBehavior(processToSpawn);
-                                processRequest.ChangeState(ProcessBehavior.State.Ready);
-                                jobQueueBehavior.AddProcess(processRequest);
+                            Process processToSpawn = processList.processes[Random.Range(0, processList.processes.Count)];
+                            ProcessBehavior processRequest = CreateProcessBehavior(processToSpawn);
+                            processRequest.ChangeState(ProcessBehavior.State.Ready);
+                            jobQueueBehavior.AddProcess(processRequest);
 
-                                ++NumProcessesInSystem;
-                            }
+                            ++NumProcessesInSystem;
                         }
-
-                        processSpawnTimer = Random.Range(3, 6);
                     }
+
+                    processSpawnTimer = Random.Range(3, 6);
                 }
             }
         }

@@ -84,7 +84,7 @@ namespace ProcessScheduling
                 gameStateBehavior.LevelData = levelData;
             }
 
-            SceneManager.LoadScene("SampleScene");
+            SceneManager.LoadScene("GameScene");
         }
     }
 }
