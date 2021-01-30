@@ -110,6 +110,11 @@ namespace ProcessScheduling
 
         private JobQueueBehavior jobQueueBehavior;
 
+        /// <summary>
+        /// Reference to the IO queue script
+        /// </summary>
+        private IOQueueBehavior ioQueueBehavior;
+
         private TimeManager timeManager;
 
         private GameOverPanelBehavior gameOverPanelBehavior;
@@ -142,9 +147,71 @@ namespace ProcessScheduling
             jobQueueBehavior.AddProcess(processBehavior);
         }
 
+        /// <summary>
+        /// Reset level
+        /// </summary>
+        public void ResetLevel()
+        {
+            if (LevelData == null)
+            {
+                Debug.LogError("Level data is null!");
+            }
+
+            if (cpuList != null)
+            {
+                cpuList.SetNumCPUs(LevelData.initialProcessorCount);
+
+                foreach (CPUBehavior cpu in cpuList.CPUs)
+                {
+                    cpu.ResetState();
+                }
+            }
+
+            if (jobQueueBehavior != null)
+            {
+                jobQueueBehavior.ClearProcesses();
+            }
+
+            if (ioQueueBehavior != null)
+            {
+                ioQueueBehavior.ResetState();
+            }
+
+            remainingTime = LevelData.timeLimit;
+
+            // 3-second delay before the first process spawn
+            processSpawnTimer = 3;
+
+            numFinishedProcesses = 0;
+            numMissedProcesses = 0;
+
+            NumProcessesInSystem = 0;
+            MaxProcessesInSystem = LevelData.maxProcessesInSystem;
+
+            TotalWaitingTime = 0;
+            TotalTurnaroundTime = 0;
+            TimeElapsed = 0;
+            IsSuccess = true;
+
+            if (gameOverPanelBehavior != null)
+            {
+                gameOverPanelBehavior.SetVisible(false);
+            }
+
+            if (timeManager != null)
+            {
+                timeManager.timeMultiplier = 1.0f;
+
+                timeManager.ResetTimer();
+                timeManager.StartTimer();
+            }
+        }
+
         private void Awake()
         {
             jobQueueBehavior = GameObject.FindObjectOfType<JobQueueBehavior>();
+
+            ioQueueBehavior = GameObject.FindObjectOfType<IOQueueBehavior>();
 
             timeManager = GameObject.FindObjectOfType<TimeManager>();
 
@@ -175,22 +242,7 @@ namespace ProcessScheduling
 
         private void Start()
         {
-            if (LevelData == null)
-            {
-                Debug.LogError("Level data is null!");
-            }
-
-            if (cpuList != null)
-            {
-                cpuList.SetNumCPUs(LevelData.initialProcessorCount);
-            }
-
-            remainingTime = LevelData.timeLimit;
-
-            // 3-second delay before the first process spawn
-            processSpawnTimer = 3;
-
-            MaxProcessesInSystem = LevelData.maxProcessesInSystem;
+            ResetLevel();
         }
 
         private ProcessBehavior CreateProcessBehavior(Process process)

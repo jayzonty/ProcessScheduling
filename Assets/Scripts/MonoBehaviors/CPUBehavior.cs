@@ -124,6 +124,24 @@ namespace ProcessScheduling
             CurrentState = newState;
         }
 
+        /// <summary>
+        /// Reset state
+        /// </summary>
+        public void ResetState()
+        {
+            CurrentState = State.Idle;
+            statusText.enabled = true;
+            statusText.text = "Idle";
+
+            if (CurrentProcess != null)
+            {
+                Destroy(CurrentProcess.gameObject);
+                CurrentProcess = null;
+            }
+
+            TotalTimeRunning = 0;
+        }
+
         private void Awake()
         {
             timeManager = GameObject.FindObjectOfType<TimeManager>();

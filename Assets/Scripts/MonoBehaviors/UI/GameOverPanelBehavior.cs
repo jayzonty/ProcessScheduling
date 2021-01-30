@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace ProcessScheduling
@@ -47,6 +48,16 @@ namespace ProcessScheduling
         /// Reference to the text displaying the average turnaround time
         /// </summary>
         public Text averageTurnaroundTimeText;
+
+        /// <summary>
+        /// Reference to the retry button
+        /// </summary>
+        public Button retryButton;
+
+        /// <summary>
+        /// Reference to the level select button
+        /// </summary>
+        public Button levelSelectButton;
 
         /// <summary>
         /// Reference to the canvas group component
@@ -180,7 +191,59 @@ namespace ProcessScheduling
         /// </summary>
         private void Start()
         {
-            SetVisible(false);
+        }
+        
+        /// <summary>
+        /// Unity callback function called when the script
+        /// is enabled.
+        /// </summary>
+        private void OnEnable()
+        {
+            if (retryButton != null)
+            {
+                retryButton.onClick.AddListener(OnRetryButtonClicked);
+            }
+
+            if (levelSelectButton != null)
+            {
+                levelSelectButton.onClick.AddListener(OnLevelSelectButtonClicked);
+            }
+        }
+
+        /// <summary>
+        /// Unity callback function called when the script
+        /// is disabled.
+        /// </summary>
+        private void OnDisable()
+        {
+            if (retryButton != null)
+            {
+                retryButton.onClick.RemoveListener(OnRetryButtonClicked);
+            }
+
+            if (levelSelectButton != null)
+            {
+                levelSelectButton.onClick.RemoveListener(OnLevelSelectButtonClicked);
+            }
+        }
+
+        /// <summary>
+        /// Handler function for when the retry button was clicked
+        /// </summary>
+        private void OnRetryButtonClicked()
+        {
+            if (gameManager != null)
+            {
+                gameManager.ResetLevel();
+            }
+        }
+
+        /// <summary>
+        /// Handler function for when the level select button was clicked
+        /// </summary>
+        private void OnLevelSelectButtonClicked()
+        {
+            SceneManager.LoadScene("LevelSelectScene");
         }
     }
 }

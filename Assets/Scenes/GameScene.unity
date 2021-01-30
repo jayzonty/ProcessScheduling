@@ -2422,6 +2422,8 @@ MonoBehaviour:
   throughputText: {fileID: 1487135180}
   averageWaitingTimeText: {fileID: 534187547}
   averageTurnaroundTimeText: {fileID: 65800765}
+  retryButton: {fileID: 105360611}
+  levelSelectButton: {fileID: 1020012853}
 --- !u!222 &667385835
 CanvasRenderer:
   m_ObjectHideFlags: 0

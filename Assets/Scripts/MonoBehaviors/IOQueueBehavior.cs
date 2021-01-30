@@ -109,6 +109,20 @@ namespace ProcessScheduling
         }
 
         /// <summary>
+        /// Resets the state IO queue
+        /// </summary>
+        public void ResetState()
+        {
+            timerUntilIOAvailable = Random.Range(minIOAvailbleTime, maxIOAvailableTime + 1);
+
+            foreach (ProcessBehavior process in processList)
+            {
+                Destroy(process.gameObject);
+            }
+            processList.Clear();
+        }
+
+        /// <summary>
         /// Unity callback function called when the script
         /// is created.
         /// </summary>
