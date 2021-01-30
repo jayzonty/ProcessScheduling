@@ -69,12 +69,12 @@ namespace ProcessScheduling
                 if (isVisible)
                 {
                     OnShow();
-                    canvasGroup.alpha = 1.0f;
+                    gameObject.SetActive(true);
                 }
                 else
                 {
                     OnHide();
-                    canvasGroup.alpha = 0.0f;
+                    gameObject.SetActive(false);
                 }
             }
         }
