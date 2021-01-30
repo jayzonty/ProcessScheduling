@@ -2414,6 +2414,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7e5d583e5ac67a45bb5cce5701dcc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  titleText: {fileID: 479659643}
   timeElapsedText: {fileID: 449849150}
   finishedProcessesText: {fileID: 199328444}
   missedProcessesText: {fileID: 802409565}
@@ -2549,12 +2550,6 @@ MonoBehaviour:
   processPrefab: {fileID: 3582641851081068796, guid: 9a7313f2e36e6a948b15f191d0544686,
     type: 3}
   cpuList: {fileID: 1148535262}
-  levelData:
-    timeLimit: 180
-    numProcessors: 2
-    maxMissableProcesses: 5
-    levelStopConditions: []
-    winConditions: []
   numFinishedProcesses: 0
   numMissedProcesses: 0
   remainingTime: 180
@@ -5867,3 +5862,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropDestinationTransform: {fileID: 520935126}
+  minIOAvailbleTime: 5
+  maxIOAvailableTime: 10

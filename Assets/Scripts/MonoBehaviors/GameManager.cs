@@ -83,6 +83,12 @@ namespace ProcessScheduling
             }
         }
 
+        public bool IsSuccess
+        {
+            get;
+            private set;
+        } = true;
+
         public LevelDataScriptableObject LevelData
         {
             get;
@@ -236,10 +242,12 @@ namespace ProcessScheduling
                     if (CheckWinConditions())
                     {
                         Debug.Log("Game Over! Success!");
+                        IsSuccess = true;
                     }
                     else
                     {
                         Debug.Log("Game Over! Failed!");
+                        IsSuccess = false;
                     }
 
                     timeManager.PauseTimer();
@@ -317,6 +325,10 @@ namespace ProcessScheduling
 
                 case "numMissedProcesses":
                     lhs = numMissedProcesses;
+                    break;
+
+                case "numFinishedProcesses":
+                    lhs = numFinishedProcesses;
                     break;
             }
 

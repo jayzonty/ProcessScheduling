@@ -9,6 +9,11 @@ namespace ProcessScheduling
     public class GameOverPanelBehavior : MonoBehaviour
     {
         /// <summary>
+        /// Reference to the text displaying the title of the panel
+        /// </summary>
+        public Text titleText;
+
+        /// <summary>
         /// Reference to the text displaying the time elapsed
         /// </summary>
         public Text timeElapsedText;
@@ -82,6 +87,18 @@ namespace ProcessScheduling
             if (gameManager == null)
             {
                 return;
+            }
+
+            if (titleText != null)
+            {
+                if (gameManager.IsSuccess)
+                {
+                    titleText.text = "Level Success!";
+                }
+                else
+                {
+                    titleText.text = "Level Failed!";
+                }
             }
 
             if (timeElapsedText != null)
