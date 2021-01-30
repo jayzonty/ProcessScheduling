@@ -97,7 +97,7 @@ namespace ProcessScheduling
 
         public int score = 0;
 
-        private float timer = 0.0f;
+        private int processSpawnTimer = 0;
 
         private JobQueueBehavior jobQueueBehavior;
 
@@ -177,30 +177,10 @@ namespace ProcessScheduling
             }
 
             remainingTime = LevelData.timeLimit;
+
+            // 3-second delay before the first process spawn
+            processSpawnTimer = 3;
         }
-
-        private void Update()
-        {
-            timer -= Time.deltaTime;
-            if (timer <= 0.0f)
-            {
-                timer = 5.0f;
-
-                if (jobQueueBehavior != null)
-                {
-                    if (NumProcessesInSystem < 5)
-                    {
-                        Process processToSpawn = processList.processes[Random.Range(0, processList.processes.Count)];
-                        ProcessBehavior processRequest = CreateProcessBehavior(processToSpawn);
-                        processRequest.ChangeState(ProcessBehavior.State.Ready);
-                        jobQueueBehavior.AddProcess(processRequest);
-
-                        ++NumProcessesInSystem;
-                    }
-                }
-            }
-        }
-
 
         private ProcessBehavior CreateProcessBehavior(Process process)
         {
@@ -255,6 +235,27 @@ namespace ProcessScheduling
                     if (gameOverPanelBehavior != null)
                     {
                         gameOverPanelBehavior.SetVisible(true);
+                    }
+                }
+                else
+                {
+                    processSpawnTimer = Mathf.Max(processSpawnTimer - 1, 0);
+                    if (processSpawnTimer <= 0)
+                    {
+                        if (NumProcessesInSystem < 5)
+                        {
+                            if (jobQueueBehavior != null)
+                            {
+                                Process processToSpawn = processList.processes[Random.Range(0, processList.processes.Count)];
+                                ProcessBehavior processRequest = CreateProcessBehavior(processToSpawn);
+                                processRequest.ChangeState(ProcessBehavior.State.Ready);
+                                jobQueueBehavior.AddProcess(processRequest);
+
+                                ++NumProcessesInSystem;
+                            }
+                        }
+
+                        processSpawnTimer = Random.Range(3, 6);
                     }
                 }
             }
