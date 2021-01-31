@@ -13,24 +13,53 @@ MonoBehaviour:
   m_Name: ProcessList
   m_EditorClassIdentifier: 
   processes:
-  - name: Process 1
+  - name: doors.exe
     minBurstTime: 10
     maxBurstTime: 20
     minTimeUntilIOWait: 5
     maxTimeUntilIOWait: 10
-    minIOWaitDuration: 3
-    maxIOWaitDuration: 5
-  - name: Process 2
-    minBurstTime: 5
-    maxBurstTime: 10
+  - name: fexplorer.exe
+    minBurstTime: 10
+    maxBurstTime: 20
     minTimeUntilIOWait: 3
-    maxTimeUntilIOWait: 5
-    minIOWaitDuration: 5
-    maxIOWaitDuration: 10
-  - name: Process 3
+    maxTimeUntilIOWait: 6
+  - name: UnityEditor.exe
+    minBurstTime: 15
+    maxBurstTime: 30
+    minTimeUntilIOWait: 5
+    maxTimeUntilIOWait: 10
+  - name: chroma.exe
+    minBurstTime: 5
+    maxBurstTime: 15
+    minTimeUntilIOWait: 3
+    maxTimeUntilIOWait: 6
+  - name: watercat.exe
+    minBurstTime: 5
+    maxBurstTime: 15
+    minTimeUntilIOWait: 3
+    maxTimeUntilIOWait: 6
+  - name: paint.exe
+    minBurstTime: 10
+    maxBurstTime: 15
+    minTimeUntilIOWait: 4
+    maxTimeUntilIOWait: 6
+  - name: random.bat
+    minBurstTime: 3
+    maxBurstTime: 5
+    minTimeUntilIOWait: 6
+    maxTimeUntilIOWait: 10
+  - name: monkaS.exe
     minBurstTime: 20
     maxBurstTime: 30
-    minTimeUntilIOWait: 10
-    maxTimeUntilIOWait: 15
-    minIOWaitDuration: 5
-    maxIOWaitDuration: 10
+    minTimeUntilIOWait: 4
+    maxTimeUntilIOWait: 8
+  - name: cs21-hwork.exe
+    minBurstTime: 15
+    maxBurstTime: 20
+    minTimeUntilIOWait: 5
+    maxTimeUntilIOWait: 8
+  - name: vapor.exe
+    minBurstTime: 10
+    maxBurstTime: 20
+    minTimeUntilIOWait: 5
+    maxTimeUntilIOWait: 10
