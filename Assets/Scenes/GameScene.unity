@@ -329,8 +329,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -300}
-  m_SizeDelta: {x: -50, y: 30}
+  m_AnchoredPosition: {x: 0, y: -360}
+  m_SizeDelta: {x: -50, y: 50}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &65800765
 MonoBehaviour:
@@ -365,7 +365,10 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Average Turnaround Time: 10 seconds'
+  m_Text: 'Average Turnaround Time: 10 seconds
+
+    (Average amount of time processes
+    take to finish execution)'
 --- !u!222 &65800766
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -483,11 +486,11 @@ RectTransform:
   m_Father: {fileID: 667385833}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 80, y: 30}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: -90, y: 30}
   m_SizeDelta: {x: 160, y: 30}
-  m_Pivot: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &105360611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2158,8 +2161,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -260}
-  m_SizeDelta: {x: -50, y: 30}
+  m_AnchoredPosition: {x: 0, y: -300}
+  m_SizeDelta: {x: -50, y: 50}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &534187547
 MonoBehaviour:
@@ -2194,7 +2197,10 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Average Waiting Time: 10 seconds'
+  m_Text: 'Average Waiting Time: 10 seconds
+
+    (Average amount of time processes
+    spend in the job queue)'
 --- !u!222 &534187548
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2790,7 +2796,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 500, y: 400}
+  m_SizeDelta: {x: 700, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &667385834
 MonoBehaviour:
@@ -3024,7 +3030,6 @@ MonoBehaviour:
   numFinishedProcesses: 0
   numMissedProcesses: 0
   remainingTime: 180
-  score: 0
 --- !u!4 &726843156
 Transform:
   m_ObjectHideFlags: 0
@@ -3539,7 +3544,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &860115559
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3903,11 +3908,11 @@ RectTransform:
   m_Father: {fileID: 667385833}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 250, y: 30}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 90, y: 30}
   m_SizeDelta: {x: 160, y: 30}
-  m_Pivot: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1020012853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4024,7 +4029,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -180}
-  m_SizeDelta: {x: -50, y: 30}
+  m_SizeDelta: {x: -50, y: 50}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1062835307
 MonoBehaviour:
@@ -4059,7 +4064,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'CPU Utilization: 100%'
+  m_Text: 'CPU Utilization: 100%
+
+    (Percentage of the time the CPUs are not idle)'
 --- !u!222 &1062835308
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5165,8 +5172,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -220}
-  m_SizeDelta: {x: -50, y: 30}
+  m_AnchoredPosition: {x: 0, y: -240}
+  m_SizeDelta: {x: -50, y: 50}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1487135180
 MonoBehaviour:
@@ -5201,7 +5208,10 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Throughput: 1 process / second'
+  m_Text: 'Throughput: 1 process / second
+
+    (Number of processes finished per
+    second)'
 --- !u!222 &1487135181
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6106,7 +6116,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5670753}
   m_HandleRect: {fileID: 5670752}
   m_Direction: 0
-  m_Value: 1
+  m_Value: 0
   m_Size: 0.9999998
   m_NumberOfSteps: 0
   m_OnValueChanged:
