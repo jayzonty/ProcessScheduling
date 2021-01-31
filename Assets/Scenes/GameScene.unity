@@ -293,8 +293,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   finishedProcessText: {fileID: 915870330}
   missedProcessesText: {fileID: 1807760087}
-  scoreText: {fileID: 1164572000}
-  timeText: {fileID: 942576704}
+  timeText: {fileID: 1164572000}
+  timeMultiplierText: {fileID: 942576704}
 --- !u!1 &65800763
 GameObject:
   m_ObjectHideFlags: 0
@@ -3787,7 +3787,7 @@ GameObject:
   - component: {fileID: 942576704}
   - component: {fileID: 942576703}
   m_Layer: 5
-  m_Name: TimeText
+  m_Name: TimeMultiplierText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3810,7 +3810,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 140, y: 0}
+  m_SizeDelta: {x: 200, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &942576703
 MonoBehaviour:
@@ -3860,7 +3860,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Time: 9999'
+  m_Text: 'Time Multiplier: x1.0'
 --- !u!222 &942576705
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4164,7 +4164,7 @@ GameObject:
   - component: {fileID: 1164572000}
   - component: {fileID: 1164571999}
   m_Layer: 5
-  m_Name: ScoreText
+  m_Name: TimeText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4237,7 +4237,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Score: 0'
+  m_Text: 'Time: 0'
 --- !u!222 &1164572001
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4896,11 +4896,11 @@ RectTransform:
   m_Father: {fileID: 1660413835}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 160, y: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -90, y: 0}
   m_SizeDelta: {x: 40, y: -10}
-  m_Pivot: {x: 0, y: 0.5}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1383990278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5525,8 +5525,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 0}
+  m_AnchoredPosition: {x: -10, y: 0}
+  m_SizeDelta: {x: 350, y: 0}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!1001 &1693892842
 PrefabInstance:
@@ -5698,11 +5698,11 @@ RectTransform:
   m_Father: {fileID: 1660413835}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 250, y: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 40, y: -10}
-  m_Pivot: {x: 0, y: 0.5}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1695480994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6229,11 +6229,11 @@ RectTransform:
   m_Father: {fileID: 1660413835}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 205, y: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -45, y: 0}
   m_SizeDelta: {x: 40, y: -10}
-  m_Pivot: {x: 0, y: 0.5}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1868415342
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -116,8 +116,6 @@ namespace ProcessScheduling
             private set;
         }
 
-        public int score = 0;
-
         private int processSpawnTimer = 0;
 
         private JobQueueBehavior jobQueueBehavior;

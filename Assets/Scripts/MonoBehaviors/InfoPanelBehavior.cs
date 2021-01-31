@@ -9,8 +9,8 @@ namespace ProcessScheduling
     {
         public Text finishedProcessText;
         public Text missedProcessesText;
-        public Text scoreText;
         public Text timeText;
+        public Text timeMultiplierText;
 
         private GameManager gameManager;
         private LevelManager levelManager;
@@ -40,14 +40,24 @@ namespace ProcessScheduling
                 missedProcessesText.text = "Missed: " + gameManager.numMissedProcesses + "/" + gameManager.LevelData.maxMissableProcesses;
             }
 
-            if (scoreText != null)
+            if (timeText != null)
             {
-                scoreText.text = "Score: " + gameManager.score;
+                if (gameManager.LevelData != null)
+                {
+                    if (gameManager.LevelData.timeLimit == 0)
+                    {
+                        timeText.text = "Time Elapsed: " + gameManager.TimeElapsed;
+                    }
+                    else
+                    {
+                        timeText.text = "Time Remaining: " + gameManager.remainingTime;
+                    }
+                }
             }
 
             if (timeManager != null)
             {
-                timeText.text = "Time: " + gameManager.remainingTime + " (x" + timeManager.timeMultiplier.ToString("F1") + ")";
+                timeMultiplierText.text = "Time multiplier: x" + timeManager.timeMultiplier.ToString("F1");
             }
         }
     }
