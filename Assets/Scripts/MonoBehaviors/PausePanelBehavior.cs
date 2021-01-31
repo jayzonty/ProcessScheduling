@@ -15,6 +15,11 @@ namespace ProcessScheduling
         public Button retryButton;
 
         /// <summary>
+        /// Reference to the end level button
+        /// </summary>
+        public Button endLevelButton;
+
+        /// <summary>
         /// Reference to the level select button
         /// </summary>
         public Button levelSelectButton;
@@ -78,6 +83,11 @@ namespace ProcessScheduling
                 retryButton.onClick.AddListener(OnRetryButtonClicked);
             }
 
+            if (endLevelButton != null)
+            {
+                endLevelButton.onClick.AddListener(OnEndLevelButtonClicked);
+            }
+
             if (levelSelectButton != null)
             {
                 levelSelectButton.onClick.AddListener(OnLevelSelectButtonClicked);
@@ -100,6 +110,11 @@ namespace ProcessScheduling
                 retryButton.onClick.RemoveListener(OnRetryButtonClicked);
             }
 
+            if (endLevelButton != null)
+            {
+                endLevelButton.onClick.RemoveListener(OnEndLevelButtonClicked);
+            }
+
             if (levelSelectButton != null)
             {
                 levelSelectButton.onClick.RemoveListener(OnLevelSelectButtonClicked);
@@ -119,6 +134,18 @@ namespace ProcessScheduling
             if (gameManager != null)
             {
                 gameManager.ResetLevel();
+                SetVisible(false);
+            }
+        }
+
+        /// <summary>
+        /// Handler function for when the end level button was clicked.
+        /// </summary>
+        private void OnEndLevelButtonClicked()
+        {
+            if (gameManager != null)
+            {
+                gameManager.EndLevel();
                 SetVisible(false);
             }
         }

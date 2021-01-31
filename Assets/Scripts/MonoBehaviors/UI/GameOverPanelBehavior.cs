@@ -135,12 +135,14 @@ namespace ProcessScheduling
             {
                 float cpuUtilization = gameManager.CPUUtilization;
                 cpuUtilizationText.text = "CPU Utilization: " + Mathf.FloorToInt(cpuUtilization * 100.0f) + "%";
+                cpuUtilizationText.text += "\n(Percentage of the time the CPUs are not idle)";
             }
 
             if (throughputText != null)
             {
                 float throughput = (gameManager.numFinishedProcesses * 1.0f) / gameManager.TimeElapsed;
-                throughputText.text = throughput.ToString("F2") + " processes per second";
+                throughputText.text = "Throughput: " + throughput.ToString("F2") + " processes per second";
+                throughputText.text += "\n(Number of processes finished per second)";
             }
 
             if (averageWaitingTimeText != null)
@@ -152,6 +154,7 @@ namespace ProcessScheduling
                 }
 
                 averageWaitingTimeText.text = "Average waiting time: " + averageWaitingTime.ToString("F2") + " seconds";
+                averageWaitingTimeText.text += "\n(Average amount of time processes spend in the job queue)";
             }
 
             if (averageTurnaroundTimeText != null)
@@ -163,6 +166,7 @@ namespace ProcessScheduling
                 }
 
                 averageTurnaroundTimeText.text = "Average turnaround time: " + averageTurnaroundTime.ToString("F2") + " seconds";
+                averageTurnaroundTimeText.text += "\n(Average amount of time processes take to finish execution)";
             }
         }
 

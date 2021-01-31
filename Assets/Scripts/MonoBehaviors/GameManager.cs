@@ -242,6 +242,32 @@ namespace ProcessScheduling
             }
         }
 
+        /// <summary>
+        /// End level
+        /// </summary>
+        public void EndLevel()
+        {
+            IsLevelOver = true;
+
+            if (CheckWinConditions())
+            {
+                Debug.Log("Game Over! Success!");
+                IsSuccess = true;
+            }
+            else
+            {
+                Debug.Log("Game Over! Failed!");
+                IsSuccess = false;
+            }
+
+            timeManager.PauseTimer();
+
+            if (gameOverPanelBehavior != null)
+            {
+                gameOverPanelBehavior.SetVisible(true);
+            }
+        }
+
         private void Awake()
         {
             jobQueueBehavior = GameObject.FindObjectOfType<JobQueueBehavior>();
@@ -346,25 +372,7 @@ namespace ProcessScheduling
 
             if (CheckLevelStopConditions())
             {
-                IsLevelOver = true;
-
-                if (CheckWinConditions())
-                {
-                    Debug.Log("Game Over! Success!");
-                    IsSuccess = true;
-                }
-                else
-                {
-                    Debug.Log("Game Over! Failed!");
-                    IsSuccess = false;
-                }
-
-                timeManager.PauseTimer();
-
-                if (gameOverPanelBehavior != null)
-                {
-                    gameOverPanelBehavior.SetVisible(true);
-                }
+                EndLevel();
             }
             else
             {
