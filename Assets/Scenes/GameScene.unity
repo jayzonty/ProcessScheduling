@@ -6346,5 +6346,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropDestinationTransform: {fileID: 520935126}
-  minIOAvailbleTime: 5
-  maxIOAvailableTime: 10
+  minIOAvailbleTime: 3
+  maxIOAvailableTime: 6
