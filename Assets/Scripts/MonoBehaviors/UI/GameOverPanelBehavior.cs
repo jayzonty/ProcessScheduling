@@ -141,6 +141,11 @@ namespace ProcessScheduling
             if (throughputText != null)
             {
                 float throughput = (gameManager.numFinishedProcesses * 1.0f) / gameManager.TimeElapsed;
+                if (gameManager.TimeElapsed <= 0)
+                {
+                    throughput = 0.0f;
+                }
+
                 throughputText.text = "Throughput: " + throughput.ToString("F2") + " processes per second";
                 throughputText.text += "\n(Number of processes finished per second)";
             }

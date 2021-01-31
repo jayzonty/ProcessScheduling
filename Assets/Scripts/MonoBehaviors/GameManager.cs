@@ -85,6 +85,11 @@ namespace ProcessScheduling
                     }
 
                     float cpuUtilization = (totalCPURunningTime * 1.0f) / (TimeElapsed * cpuList.GetNumCPUs());
+                    if (TimeElapsed <= 0)
+                    {
+                        cpuUtilization = 0.0f;
+                    }
+
                     return cpuUtilization;
                 }
 

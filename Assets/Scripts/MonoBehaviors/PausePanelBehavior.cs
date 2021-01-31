@@ -133,6 +133,7 @@ namespace ProcessScheduling
         {
             if (gameManager != null)
             {
+                gameManager.SetPaused(false);
                 gameManager.ResetLevel();
                 SetVisible(false);
             }
@@ -145,6 +146,7 @@ namespace ProcessScheduling
         {
             if (gameManager != null)
             {
+                gameManager.SetPaused(false);
                 gameManager.EndLevel();
                 SetVisible(false);
             }
