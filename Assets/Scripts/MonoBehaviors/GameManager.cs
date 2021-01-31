@@ -98,6 +98,18 @@ namespace ProcessScheduling
             private set;
         } = true;
 
+        public bool IsPaused
+        {
+            get;
+            private set;
+        } = false;
+
+        public bool IsLevelOver
+        {
+            get;
+            private set;
+        } = false;
+
         public LevelDataScriptableObject LevelData
         {
             get;
@@ -118,6 +130,8 @@ namespace ProcessScheduling
         private TimeManager timeManager;
 
         private GameOverPanelBehavior gameOverPanelBehavior;
+
+        private PausePanelBehavior pausePanelBehavior;
 
         public int NumCPUs
         {
@@ -192,10 +206,16 @@ namespace ProcessScheduling
             TotalTurnaroundTime = 0;
             TimeElapsed = 0;
             IsSuccess = true;
+            IsLevelOver = false;
 
             if (gameOverPanelBehavior != null)
             {
                 gameOverPanelBehavior.SetVisible(false);
+            }
+
+            if (pausePanelBehavior != null)
+            {
+                pausePanelBehavior.SetVisible(false);
             }
 
             if (timeManager != null)
@@ -204,6 +224,23 @@ namespace ProcessScheduling
 
                 timeManager.ResetTimer();
                 timeManager.StartTimer();
+            }
+        }
+
+        public void SetPaused(bool isPaused)
+        {
+            if (isPaused)
+            {
+                timeManager.PauseTimer();
+                IsPaused = true;
+            }
+            else
+            {
+                if (timeManager != null)
+                {
+                    timeManager.ResumeTimer();
+                    IsPaused = false;
+                }
             }
         }
 
@@ -217,10 +254,38 @@ namespace ProcessScheduling
 
             gameOverPanelBehavior = GameObject.FindObjectOfType<GameOverPanelBehavior>();
 
+            pausePanelBehavior = GameObject.FindObjectOfType<PausePanelBehavior>();
+
             GameStateBehavior gameState = GameObject.FindObjectOfType<GameStateBehavior>();
             if (gameState != null)
             {
                 LevelData = gameState.LevelData;
+            }
+        }
+
+        /// <summary>
+        /// Unity callback function that is called
+        /// every frame.
+        /// </summary>
+        private void Update()
+        {
+            if (IsLevelOver)
+            {
+                return;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                if (IsPaused)
+                {
+                    return;
+                }
+
+                if (pausePanelBehavior != null)
+                {
+                    pausePanelBehavior.SetVisible(true);
+                    SetPaused(true);
+                }
             }
         }
 
@@ -283,6 +348,8 @@ namespace ProcessScheduling
 
             if (CheckLevelStopConditions())
             {
+                IsLevelOver = true;
+
                 if (CheckWinConditions())
                 {
                     Debug.Log("Game Over! Success!");
