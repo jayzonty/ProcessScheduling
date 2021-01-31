@@ -290,9 +290,13 @@ namespace ProcessScheduling
                 string info = "Burst: " + RemainingBurstTime.ToString() + "\n";
                 info += "State: " + CurrentState.ToString() + "\n";
                 info += "Time in system: " + TurnaroundTime.ToString();
-                if (ExecutionDeadline > 0.0f)
+
+                if (CurrentState == State.Ready)
                 {
-                    info += "\nDeadline: " + ExecutionDeadlineTimer.ToString();
+                    if (ExecutionDeadline > 0.0f)
+                    {
+                        info += "\nDeadline: " + ExecutionDeadlineTimer.ToString();
+                    }
                 }
                 processInfoText.text = info;
             }

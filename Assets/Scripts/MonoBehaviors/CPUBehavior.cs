@@ -94,7 +94,7 @@ namespace ProcessScheduling
 
                     if (CurrentState == State.Idle)
                     {
-                        CurrentState = State.Running;
+                        ChangeState(State.Running);
                     }
                     else if (CurrentState == State.Running)
                     {
@@ -121,6 +121,29 @@ namespace ProcessScheduling
         /// <param name="newState">New state</param>
         public void ChangeState(State newState)
         {
+            if (CurrentState == newState)
+            {
+                return;
+            }
+
+            switch (newState)
+            {
+                case State.Idle:
+                    if (statusText != null)
+                    {
+                        statusText.text = "Idle";
+                        statusText.enabled = true;
+                    }
+                    break;
+
+                case State.Running:
+                    statusText.enabled = false;
+                    break;
+
+                case State.ContextSwitch:
+                    break;
+            }
+
             CurrentState = newState;
         }
 
