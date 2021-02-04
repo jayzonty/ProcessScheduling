@@ -13,13 +13,11 @@ namespace ProcessScheduling
         public Text timeMultiplierText;
 
         private GameManager gameManager;
-        private LevelManager levelManager;
         private TimeManager timeManager;
 
         private void Awake()
         {
             gameManager = GameObject.FindObjectOfType<GameManager>();
-            levelManager = GameObject.FindObjectOfType<LevelManager>();
             timeManager = GameObject.FindObjectOfType<TimeManager>();
         }
 
