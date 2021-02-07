@@ -5,6 +5,21 @@ namespace ProcessScheduling
 {
     public class ProcessBehavior : MonoBehaviour
     {
+        /// <summary>
+        /// Color if the process is in a ready state
+        /// </summary>
+        public Color readyStateColor = Color.white;
+
+        /// <summary>
+        /// Color if the process is in a running state
+        /// </summary>
+        public Color runningStateColor = Color.green;
+
+        /// <summary>
+        /// Color if the process is in an I/O wait state
+        /// </summary>
+        public Color ioWaitStateColor = Color.yellow;
+
         public enum State
         {
             New,
@@ -133,6 +148,11 @@ namespace ProcessScheduling
 
         private CanvasGroup canvasGroup;
 
+        /// <summary>
+        /// Reference to the image component
+        /// </summary>
+        private Image imageComponent;
+
         public bool IsVisible
         {
             get
@@ -215,6 +235,8 @@ namespace ProcessScheduling
             gameManager = GameObject.FindObjectOfType<GameManager>();
             
             canvasGroup = GetComponent<CanvasGroup>();
+
+            imageComponent = GetComponent<Image>();
 
             CurrentState = State.New;
         }
@@ -299,6 +321,28 @@ namespace ProcessScheduling
                     }
                 }
                 processInfoText.text = info;
+            }
+
+            // Change color based on the process state
+            if (imageComponent != null)
+            {
+                switch (CurrentState)
+                {
+                    case State.Ready:
+                        imageComponent.color = readyStateColor;
+                        break;
+
+                    case State.Running:
+                        imageComponent.color = runningStateColor;
+                        break;
+
+                    case State.IOWait:
+                        imageComponent.color = ioWaitStateColor;
+                        break;
+
+                    case State.Finished:
+                        break;
+                }
             }
         }
     }
