@@ -339,7 +339,7 @@ namespace ProcessScheduling
             ResetLevel();
         }
 
-        private ProcessBehavior CreateProcessBehavior(Process process)
+        private ProcessBehavior CreateProcessBehavior(ProcessTemplate process)
         {
             if (processPrefab == null)
             {
@@ -388,7 +388,7 @@ namespace ProcessScheduling
                     {
                         if (jobQueueBehavior != null)
                         {
-                            Process processToSpawn = processList.processes[Random.Range(0, processList.processes.Count)];
+                            ProcessTemplate processToSpawn = processList.processes[Random.Range(0, processList.processes.Count)];
                             ProcessBehavior processRequest = CreateProcessBehavior(processToSpawn);
                             processRequest.ChangeState(ProcessBehavior.State.Ready);
                             jobQueueBehavior.AddProcess(processRequest);

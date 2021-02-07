@@ -5,7 +5,7 @@ using UnityEngine;
 namespace ProcessScheduling
 {
     [System.Serializable]
-    public class Process
+    public class ProcessTemplate
     {
         public string name;
 
@@ -19,6 +19,6 @@ namespace ProcessScheduling
     [CreateAssetMenu(fileName = "ProcessList", menuName = "Game/ProcessList")]
     public class ProcessListScriptableObject : ScriptableObject
     {
-        public List<Process> processes;
+        public List<ProcessTemplate> processes;
     }
 }
