@@ -16,50 +16,40 @@ MonoBehaviour:
   - name: doors.exe
     minBurstTime: 10
     maxBurstTime: 20
-    minTimeUntilIOWait: 5
-    maxTimeUntilIOWait: 10
+    ioRequestProbability: 0.1
   - name: fexplorer.exe
     minBurstTime: 10
     maxBurstTime: 20
-    minTimeUntilIOWait: 3
-    maxTimeUntilIOWait: 6
+    ioRequestProbability: 0.25
   - name: UnityEditor.exe
     minBurstTime: 15
     maxBurstTime: 30
-    minTimeUntilIOWait: 5
-    maxTimeUntilIOWait: 10
+    ioRequestProbability: 0.2
   - name: chroma.exe
     minBurstTime: 5
     maxBurstTime: 15
-    minTimeUntilIOWait: 3
-    maxTimeUntilIOWait: 6
+    ioRequestProbability: 0.15
   - name: watercat.exe
     minBurstTime: 5
     maxBurstTime: 15
-    minTimeUntilIOWait: 3
-    maxTimeUntilIOWait: 6
+    ioRequestProbability: 0.15
   - name: paint.exe
     minBurstTime: 10
     maxBurstTime: 15
-    minTimeUntilIOWait: 4
-    maxTimeUntilIOWait: 6
+    ioRequestProbability: 0.1
   - name: random.bat
     minBurstTime: 3
     maxBurstTime: 5
-    minTimeUntilIOWait: 6
-    maxTimeUntilIOWait: 10
+    ioRequestProbability: 0
   - name: monkaS.exe
     minBurstTime: 20
     maxBurstTime: 30
-    minTimeUntilIOWait: 4
-    maxTimeUntilIOWait: 8
+    ioRequestProbability: 0.3
   - name: cs21-hwork.exe
     minBurstTime: 15
     maxBurstTime: 20
-    minTimeUntilIOWait: 5
-    maxTimeUntilIOWait: 8
+    ioRequestProbability: 0.15
   - name: vapor.exe
     minBurstTime: 10
     maxBurstTime: 20
-    minTimeUntilIOWait: 5
-    maxTimeUntilIOWait: 10
+    ioRequestProbability: 0.15

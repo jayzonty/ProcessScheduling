@@ -40,19 +40,44 @@ namespace ProcessScheduling
         public Text processInfoText;
 
         /// <summary>
+        /// Process template
+        /// </summary>
+        public ProcessTemplate Template
+        {
+            get;
+            set;
+        } = null;
+
+        /// <summary>
         /// Property for the process name
         /// </summary>
         public string Name
         {
             get
             {
-                return processName;
-            }
+                if (Template != null)
+                {
+                    return Template.name;
+                }
 
-            set
+                return string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Probability that the process will request for I/O
+        /// whenever an I/O request check is made.
+        /// </summary>
+        public float IORequestProbability
+        {
+            get
             {
-                processName = value;
-                UpdateInfoDisplay();
+                if (Template != null)
+                {
+                    return Template.ioRequestProbability;
+                }
+
+                return 0.0f;
             }
         }
 
@@ -71,18 +96,6 @@ namespace ProcessScheduling
                 remainingBurstTime = value;
                 UpdateInfoDisplay();
             }
-        }
-
-        public int MinTimeUntilIOWait
-        {
-            get;
-            set;
-        }
-
-        public int MaxTimeUntilIOWait
-        {
-            get;
-            set;
         }
 
         public int ExecutionDeadline
@@ -138,7 +151,10 @@ namespace ProcessScheduling
         /// </summary>
         private int executionDeadlineTimer;
 
-        private int timeUntilNextIOWait = 0;
+        /// <summary>
+        /// Timer before the next I/O request check
+        /// </summary>
+        private int ioRequestCheckTimer = 0;
 
         private int startTime;
 
@@ -204,26 +220,36 @@ namespace ProcessScheduling
         {
             if (CurrentState == State.Ready)
             {
-                timeUntilNextIOWait = Random.Range(MinTimeUntilIOWait, MaxTimeUntilIOWait);
-
-                CurrentState = State.Running;
+                ChangeState(State.Running);
             }
             else if (CurrentState == State.Running)
             {
                 RemainingBurstTime = Mathf.Max(0, RemainingBurstTime - deltaTime);
-                timeUntilNextIOWait = Mathf.Max(0, timeUntilNextIOWait - deltaTime);
+                ioRequestCheckTimer = Mathf.Max(0, ioRequestCheckTimer - deltaTime);
 
                 if (RemainingBurstTime > 0)
                 {
-                    if (timeUntilNextIOWait == 0)
+                    if (ioRequestCheckTimer == 0)
                     {
-                        CurrentState = State.IOWait;
-                        timeUntilNextIOWait = Random.Range(MinTimeUntilIOWait, MaxTimeUntilIOWait + 1);
+                        bool isIORequest = false;
+                        if (Template != null)
+                        {
+                            if (Template.ioRequestProbability > 0.0f)
+                            {
+                                isIORequest = Random.Range(0.0f, 1.0f) <= Template.ioRequestProbability;
+                            }
+                        }
+                        if (isIORequest)
+                        {
+                            ChangeState(State.IOWait);
+                        }
+
+                        ioRequestCheckTimer = 2;
                     }
                 }
                 else
                 {
-                    CurrentState = State.Finished;
+                    ChangeState(State.Finished);
                 }
             }
         }

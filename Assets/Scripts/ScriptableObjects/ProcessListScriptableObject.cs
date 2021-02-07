@@ -12,8 +12,11 @@ namespace ProcessScheduling
         public int minBurstTime;
         public int maxBurstTime;
 
-        public int minTimeUntilIOWait;
-        public int maxTimeUntilIOWait;
+        /// <summary>
+        /// Probability that the process will request for I/O
+        /// whenever an I/O request check is made.
+        /// </summary>
+        public float ioRequestProbability;
     }
 
     [CreateAssetMenu(fileName = "ProcessList", menuName = "Game/ProcessList")]

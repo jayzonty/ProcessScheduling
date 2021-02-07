@@ -351,10 +351,8 @@ namespace ProcessScheduling
             ProcessBehavior processBehavior = processGO.GetComponent<ProcessBehavior>();
             if (processBehavior != null)
             {
-                processBehavior.Name = process.name;
+                processBehavior.Template = process;
                 processBehavior.RemainingBurstTime = Random.Range(process.minBurstTime, process.maxBurstTime);
-                processBehavior.MinTimeUntilIOWait = process.minTimeUntilIOWait;
-                processBehavior.MaxTimeUntilIOWait = process.maxTimeUntilIOWait;
 
                 bool hasDeadline = Random.Range(0, 2) == 0;
                 if (hasDeadline)
