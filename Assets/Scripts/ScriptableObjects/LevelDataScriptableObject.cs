@@ -54,5 +54,11 @@ namespace ProcessScheduling
         /// List of process data templates
         /// </summary>
         public List<ProcessDataScriptableObject> processTemplates;
+
+        /// <summary>
+        /// Background music to play during this level.
+        /// If not specified, the game will use the default one.
+        /// </summary>
+        public AudioClip backgroundMusicAudioClip;
     }
 }

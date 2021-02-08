@@ -132,6 +132,11 @@ namespace ProcessScheduling
 
         private TimeManager timeManager;
 
+        /// <summary>
+        /// Reference to the audio manager script
+        /// </summary>
+        private AudioManager audioManager;
+
         private GameOverPanelBehavior gameOverPanelBehavior;
 
         private PausePanelBehavior pausePanelBehavior;
@@ -228,6 +233,18 @@ namespace ProcessScheduling
                 timeManager.ResetTimer();
                 timeManager.StartTimer();
             }
+
+            if (audioManager != null)
+            {
+                if (LevelData.backgroundMusicAudioClip != null)
+                {
+                    audioManager.PlayAudioClip(LevelData.backgroundMusicAudioClip, true);
+                }
+                else
+                {
+                    audioManager.PlayAudioClip(audioManager.defaultLevelAudioClip, true);
+                }
+            }
         }
 
         public void SetPaused(bool isPaused)
@@ -271,6 +288,11 @@ namespace ProcessScheduling
             {
                 gameOverPanelBehavior.SetVisible(true);
             }
+
+            if (audioManager != null)
+            {
+                audioManager.StopCurrentAudioClip();
+            }
         }
 
         private void Awake()
@@ -280,6 +302,8 @@ namespace ProcessScheduling
             ioQueueBehavior = GameObject.FindObjectOfType<IOQueueBehavior>();
 
             timeManager = GameObject.FindObjectOfType<TimeManager>();
+
+            audioManager = GameObject.FindObjectOfType<AudioManager>();
 
             gameOverPanelBehavior = GameObject.FindObjectOfType<GameOverPanelBehavior>();
 
