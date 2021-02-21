@@ -1654,7 +1654,6 @@ GameObject:
   - component: {fileID: 3582641850881845361}
   - component: {fileID: 3582641850881845362}
   - component: {fileID: 3582641850881845363}
-  - component: {fileID: 3582641850881845373}
   m_Layer: 5
   m_Name: Process
   m_TagString: Untagged
@@ -1662,23 +1661,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &3582641850881845373
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3582641850881845367}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6df7675c33474348818e3b537dae3ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  readyStateColor: {r: 1, g: 1, b: 1, a: 1}
-  runningStateColor: {r: 0, g: 1, b: 0, a: 1}
-  ioWaitStateColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  processNameText: {fileID: 3582641851870197840}
-  processInfoText: {fileID: 3582641851739850602}
 --- !u!222 &3582641851739850517
 CanvasRenderer:
   m_ObjectHideFlags: 0
