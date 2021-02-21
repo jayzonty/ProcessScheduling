@@ -376,7 +376,6 @@ namespace ProcessScheduling
             if (processBehavior != null)
             {
                 processBehavior.Template = process;
-                processBehavior.RemainingBurstTime = Random.Range(process.minBurstTime, process.maxBurstTime);
 
                 bool hasDeadline = Random.Range(0, 2) == 0;
                 if (hasDeadline)

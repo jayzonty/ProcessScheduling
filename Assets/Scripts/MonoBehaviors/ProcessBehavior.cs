@@ -36,8 +36,34 @@ namespace ProcessScheduling
             private set;
         }
 
+        /// <summary>
+        /// Text component for displaying the
+        /// process's name
+        /// </summary>
         public Text processNameText;
-        public Text processInfoText;
+
+        /// <summary>
+        /// Text component for displaying the
+        /// process's next required action
+        /// </summary>
+        public Text actionText;
+
+        /// <summary>
+        /// Text component for displaying the
+        /// process's progress
+        /// </summary>
+        public Text progressText;
+
+        /// <summary>
+        /// Image component for displaying the
+        /// deadline timer
+        /// </summary>
+        public Image deadlineFillImage;
+
+        /// <summary>
+        /// Reference to the image component
+        /// </summary>
+        public Image borderImageComponent;
 
         /// <summary>
         /// Process template
@@ -81,23 +107,6 @@ namespace ProcessScheduling
             }
         }
 
-        /// <summary>
-        /// Property for the remaining burst time
-        /// </summary>
-        public int RemainingBurstTime
-        {
-            get
-            {
-                return remainingBurstTime;
-            }
-
-            set
-            {
-                remainingBurstTime = value;
-                UpdateInfoDisplay();
-            }
-        }
-
         public int ExecutionDeadline
         {
             get;
@@ -137,14 +146,14 @@ namespace ProcessScheduling
         }
 
         /// <summary>
-        /// Process name
+        /// Burst time
         /// </summary>
-        private string processName;
+        private int burstTime;
 
         /// <summary>
-        /// Remaining burst time
+        /// Total execution time
         /// </summary>
-        private int remainingBurstTime = 0;
+        private int totalExecutionTime;
 
         /// <summary>
         /// Execution deadline timer
@@ -163,11 +172,6 @@ namespace ProcessScheduling
         private GameManager gameManager = null;
 
         private CanvasGroup canvasGroup;
-
-        /// <summary>
-        /// Reference to the image component
-        /// </summary>
-        private Image imageComponent;
 
         public bool IsVisible
         {
@@ -199,6 +203,7 @@ namespace ProcessScheduling
                     break;
 
                 case State.Running:
+                    ExecutionDeadlineTimer = 0;
                     break;
 
                 case State.IOWait:
@@ -224,10 +229,10 @@ namespace ProcessScheduling
             }
             else if (CurrentState == State.Running)
             {
-                RemainingBurstTime = Mathf.Max(0, RemainingBurstTime - deltaTime);
+                totalExecutionTime += deltaTime;
                 ioRequestCheckTimer = Mathf.Max(0, ioRequestCheckTimer - deltaTime);
 
-                if (RemainingBurstTime > 0)
+                if (totalExecutionTime < burstTime)
                 {
                     if (ioRequestCheckTimer == 0)
                     {
@@ -262,8 +267,6 @@ namespace ProcessScheduling
             
             canvasGroup = GetComponent<CanvasGroup>();
 
-            imageComponent = GetComponent<Image>();
-
             CurrentState = State.New;
         }
 
@@ -273,6 +276,10 @@ namespace ProcessScheduling
             {
                 startTime = timeManager.CurrentGameTime;
             }
+
+            burstTime = Random.Range(Template.minBurstTime, Template.maxBurstTime);
+
+            UpdateInfoDisplay();
         }
 
         private void OnEnable()
@@ -333,37 +340,54 @@ namespace ProcessScheduling
                 processNameText.text = Name;
             }
 
-            if (processInfoText != null)
+            if (CurrentState == State.Ready)
             {
-                string info = "Burst: " + RemainingBurstTime.ToString() + "\n";
-                info += "State: " + CurrentState.ToString() + "\n";
-                info += "Time in system: " + TurnaroundTime.ToString();
-
-                if (CurrentState == State.Ready)
+                float deadlineProgress = 0.0f;
+                if (ExecutionDeadline > 0.0f)
                 {
-                    if (ExecutionDeadline > 0.0f)
-                    {
-                        info += "\nDeadline: " + ExecutionDeadlineTimer.ToString();
-                    }
+                    deadlineProgress = executionDeadlineTimer * 1.0f / ExecutionDeadline;
+                    
                 }
-                processInfoText.text = info;
+
+                if (deadlineFillImage != null)
+                {
+                    deadlineFillImage.rectTransform.localScale = new Vector3(deadlineProgress, 1.0f, 0.0f);
+                }
+            }
+
+            float progress = totalExecutionTime * 1.0f / burstTime;
+            if (progressText != null)
+            {
+                progressText.text = Mathf.FloorToInt(progress * 100.0f).ToString() + "%";
             }
 
             // Change color based on the process state
-            if (imageComponent != null)
+            if (borderImageComponent != null)
             {
                 switch (CurrentState)
                 {
                     case State.Ready:
-                        imageComponent.color = readyStateColor;
+                        borderImageComponent.color = readyStateColor;
+                        if (actionText.text != null)
+                        {
+                            actionText.text = "CPU";
+                        }
                         break;
 
                     case State.Running:
-                        imageComponent.color = runningStateColor;
+                        borderImageComponent.color = runningStateColor;
+                        if (actionText.text != null)
+                        {
+                            actionText.text = "-";
+                        }
                         break;
 
                     case State.IOWait:
-                        imageComponent.color = ioWaitStateColor;
+                        borderImageComponent.color = ioWaitStateColor;
+                        if (actionText.text != null)
+                        {
+                            actionText.text = "I/O";
+                        }
                         break;
 
                     case State.Finished:
