@@ -12,4 +12,4 @@ This game was made as an entry for [Finally Finish Something game jam (FFSjam) 2
 
 This game was made using the [Unity](https://unity.com) game engine and C#.
 
-You can play the game in a browser [here](jayzonty.itch.io/process-scheduling).
+You can play the game in a browser [here](https://jayzonty.itch.io/process-scheduling).
